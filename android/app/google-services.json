@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "707141279284",
+    "project_id": "diskounto-4e594",
+    "storage_bucket": "diskounto-4e594.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707141279284:android:93eb8c6b40104f5d74f461",
+        "android_client_info": {
+          "package_name": "com.diskounto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707141279284-j3l3sjrrvc0g7j22ulobroblpsfu67ft.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.diskounto",
+            "certificate_hash": "755e1d98b3cd4db366672f6efce58716156d0c6e"
+          }
+        },
+        {
+          "client_id": "707141279284-onv7louui06tsvvfg319l39mg10i3gpb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.diskounto",
+            "certificate_hash": "de2dd7719f8c2dbbd31f063b7d0ac22853e1520a"
+          }
+        },
+        {
+          "client_id": "707141279284-83ivmb1f9f65ok9a40644eesg70frg40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfBmKUhPw31WtZZ1WIOBA1Vcw9EjcDqpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707141279284-83ivmb1f9f65ok9a40644eesg70frg40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

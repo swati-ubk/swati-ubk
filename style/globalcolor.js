@@ -1,0 +1,16 @@
+export const globalcolor = {
+    ImageBaseUrl:'https://s3.ap-south-1.amazonaws.com/beta.diskounto.com-assets/',
+    PrimaryColor:'#FD7729',
+    SeconderFontColor:'#6A6A49',
+    SeconderColor:'#2C2C2C',
+    Font:'Lato-Regular',
+    FontLight:'Lato-Light',
+    GradientSeconder:'#FF9626',
+    Textcolor:'#ffffff',
+    BackgroundColor:'#FFF5EA',
+    PlaceHolderColor:'#666666',
+    Separator:'#F0F0F0',
+    Successcolor:'#5cb85c',
+    Errorcolor:'#dc3545',
+    BorderColor:'#C4C4C4',
+}
