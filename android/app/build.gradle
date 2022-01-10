@@ -144,7 +144,7 @@ android {
             storePassword '123456'
             storeFile file(MYAPP_RELEASE_STORE_FILE)
             keyPassword '123456'
-            keyAlias 'demo'
+            keyAlias 'my-key-alias'
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE'))
             {
                 storeFile file(MYAPP_RELEASE_STORE_FILE)
@@ -164,9 +164,9 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('demo.keystore')
+            storeFile file('my-upload-key.keystore')
             storePassword '123456'
-            keyAlias 'demo'
+            keyAlias 'my-key-alias'
             keyPassword '123456'
         }
     }

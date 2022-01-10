@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View ,Image, StyleSheet} from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 //let { StyleSheet } = React;
 
 const height = Dimensions.get('window').height;
@@ -10,65 +10,66 @@ const width = Dimensions.get('window').width;
 
 export default class SplashScreen extends Component {
     constructor(props) {
-        
+
         super();
     }
-   
+
 
     render() {
         return (
-            console.log('Animation Finished!'+height),
-            <View 
+            console.log('Animation Finished!' + height),
+            <View
                 style={{
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
-                   // height: height, width: width,
+                    // height: height, width: width,
                     backgroundColor: '#ffffff',
 
-                   
+
                 }
-                
-            }
-           
+
+                }
+
             >
-                
-                <LottieView 
-                  //style={{flex: 1}}
-                 // style={styles.fullScreen}
-                   //style={{ height: 1200, width: width }}
+
+                <LottieView
+                    //style={{flex: 1}}
+                    // style={styles.fullScreen}
+                    //style={{ height: 1200, width: width }}
                     source={require('../assets/splash.json')}
                     //logoImage={require("../assets/logo.png")}
                     autoPlay
                     loop={false}
-                     speed={0.5}
+                    speed={0.5}
                     onAnimationFinish={() => {
                         console.log('Animation Finished!')
                         this.props.navigation.replace('SignInScreen');
                     }}
                 />
-                 <Image 
-                
-                 style={{ width:"70%",  resizeMode: "contain",
-                 }}
-                        source={require('../assets/logo.png')}
-                        />
+                <Image
+
+                    style={{
+                        width: "70%", resizeMode: "contain",
+                    }}
+                    source={require('../assets/logo.png')}
+                />
             </View>
         )
 
         const styles = StyleSheet.create({
             container: {
-              justifyContent: 'center',
-              alignItems: 'center',
+                justifyContent: 'center',
+                alignItems: 'center',
             },
             logo: {
-              width: 300,
-              height: 400,
+                width: 300,
+                height: 400,
             },
-          });
+        });
     }
 
-    
+
 }
 
 
