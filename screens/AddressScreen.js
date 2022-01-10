@@ -36,7 +36,8 @@ const AddressScreen = probs => {
     longitude: 88.4324,
   });
   const [Token, SetToken] = useState('');
-  const [selectedValue, setSelectedValue] = useState('java');
+
+  const [selectedLanguage, setSelectedLanguage] = useState();
   const [data, setData] = React.useState({
     FirstName: '',
     LastName: '',
@@ -402,16 +403,16 @@ const AddressScreen = probs => {
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>State</Text>
-          <View style={globalstyle.ListrowAccount}>
-            <Picker
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
-            </Picker>
-          </View>
+
+          <Picker
+            selectedValue={selectedLanguage}
+            onValueChange={(itemValue, itemIndex) =>
+              setSelectedLanguage(itemValue)
+            }>
+            <Picker.Item label="Java" value="java" />
+            <Picker.Item label="JavaScript" value="js" />
+            <Picker.Item label="CSS" value="CSS" />
+          </Picker>
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>Landmark</Text>
