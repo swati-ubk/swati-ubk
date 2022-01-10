@@ -9,7 +9,6 @@ import {
   Image,
   TextInput,
   ScrollView,
-  Picker,
 } from 'react-native';
 import {globalstyle} from '../style/globals.js';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -21,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTheme} from 'react-native-paper';
 import WebService from '../service/WebService';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import {Picker} from '@react-native-picker/picker';
 import Geolocation, {
   getCurrentPosition,
 } from 'react-native-geolocation-service';
@@ -403,29 +403,14 @@ const AddressScreen = probs => {
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>State</Text>
           <View style={globalstyle.ListrowAccount}>
-            {/* <TextInput
-              placeholder=""
-              placeholderTextColor="#666666"
-              // secureTextEntry={data.secureTextEntry ? true : false}
-              style={[
-                globalstyle.textInput,
-                {
-                  // color: colors.text,
-                },
-              ]}
-              autoCapitalize="none"
-              onChangeText={val => handleState(val)}
-              value={data.State}
-            /> */}
-            {/* <Picker
-              selectedValue={selectedValue}
-              style={{height: 50, width: 150}}
+            <Picker
+              selectedValue={selectedLanguage}
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedValue(itemValue)
+                setSelectedLanguage(itemValue)
               }>
               <Picker.Item label="Java" value="java" />
               <Picker.Item label="JavaScript" value="js" />
-            </Picker> */}
+            </Picker>
           </View>
         </View>
         <View style={styles.Listheight}>
