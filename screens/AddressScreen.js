@@ -9,6 +9,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {globalstyle} from '../style/globals.js';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -21,6 +22,7 @@ import {useTheme} from 'react-native-paper';
 import WebService from '../service/WebService';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import {Picker} from '@react-native-picker/picker';
+import RadioForm from 'react-native-simple-radio-button';
 import Geolocation, {
   getCurrentPosition,
 } from 'react-native-geolocation-service';
@@ -36,8 +38,9 @@ const AddressScreen = probs => {
     longitude: 88.4324,
   });
   const [Token, SetToken] = useState('');
-
-  const [selectedLanguage, setSelectedLanguage] = useState();
+  const [AddressType, SetAddressType] = useState('');
+  const [selectedState, setStateCode] = useState();
+  const [AllStates, setAllState] = useState([]);
   const [data, setData] = React.useState({
     FirstName: '',
     LastName: '',
@@ -52,8 +55,18 @@ const AddressScreen = probs => {
     state_short: '',
     country_short: '',
     country_long: '',
+    INVALID_NAME: false,
+    INVALID_MOBILE: false,
+    INVALID_POSTAL_CODE: false,
+    INVALID_LOCALITY: false,
+    INVALID_CITY: false,
+    INVALID_STATE: false,
+    INVALID_LANDMARK: false,
   });
-
+  var radio_props = [
+    {label: 'HOME ', value: 'HOME'},
+    {label: 'OFFICE ', value: 'OFFICE'},
+  ];
   const getcurrentPogition = () => {
     Geocoder.init('AIzaSyBCszp5-Zs8ICl6hczTUjJ6CVbjwj581-Q');
     Geolocation.getCurrentPosition(
@@ -82,6 +95,7 @@ const AddressScreen = probs => {
         let userToken = await AsyncStorage.getItem('userToken');
         SetToken(userToken);
         getcurrentPogition();
+        GetAllState();
       } catch (e) {
         console.log(e);
       }
@@ -90,10 +104,18 @@ const AddressScreen = probs => {
     fetchMyAPI();
   }, []);
 
+  const GetAllState = async () => {
+    WebService.GetDataJSon(`state`).then(response => {
+      // this.setState({data: response.data.banners});
+      setAllState(response);
+      //console.log('all state...', response);
+    });
+  };
+
   const gtaddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then(json => {
-        console.log('Google Map Adreess...', JSON.stringify(json.results[0]));
+        //  console.log('Google Map Adreess...', JSON.stringify(json.results[0]));
 
         let city = json.results[0].address_components[1].long_name;
         let State = json.results[0].address_components[2].long_name;
@@ -202,18 +224,18 @@ const AddressScreen = probs => {
           country_long: 'India',
         },
       },
-      addressType: 'HOME',
+      addressType: AddressType,
       name: data.FirstName,
       mobileNo: data.MobileNo,
       pin: data.PinCode,
       locality: data.Area,
       address: data.formatted_address,
-      city: data.city,
-      stateCode: data.state_short,
+      city: data.City,
+      stateCode: selectedState,
       landmark: data.LandMark,
       alternateMobileNo: data.AlterNativeNumber,
     };
-    console.log('Bodydata...', Bodydata);
+    // console.log('Bodydata...', Bodydata);
 
     const requestOptions = {
       method: 'POST',
@@ -224,8 +246,78 @@ const AddressScreen = probs => {
       body: JSON.stringify(Bodydata),
     };
     const response = await WebService.PostData('address', requestOptions);
-    const json = await response.json();
-    console.log('Response Data..', json);
+    const resJson = await response.json();
+    //  console.log('Response Data..', resJson);
+
+    if (resJson.hasOwnProperty('errors')) {
+      // console.log('error', resJson);
+      resJson.errors.forEach(element => {
+        //   console.log('element....', element);
+        if (element.code == 'INVALID_NAME') {
+          console.log('Invalid name....');
+          setData({
+            ...data,
+            INVALID_NAME: true,
+          });
+        }
+
+        if (element.code == 'INVALID_MOBILE') {
+          setData({
+            ...data,
+            INVALID_MOBILE: true,
+          });
+        }
+        if (element.code == 'INVALID_POSTAL_CODE') {
+          setData({
+            ...data,
+            INVALID_POSTAL_CODE: true,
+          });
+        }
+        if (element.code == 'INVALID_LOCALITY') {
+          setData({
+            ...data,
+            INVALID_LOCALITY: true,
+          });
+        }
+        if (element.code == 'INVALID_CITY') {
+          setData({
+            ...data,
+            INVALID_CITY: true,
+          });
+        }
+        if (element.code == 'INVALID_STATE') {
+          setData({
+            ...data,
+            INVALID_STATE: true,
+          });
+        }
+        if (element.code == 'INVALID_LANDMARK') {
+          setData({
+            ...data,
+            INVALID_LANDMARK: true,
+          });
+        }
+      });
+    } else {
+      setData({
+        ...data,
+        INVALID_NAME: false,
+        INVALID_MOBILE: false,
+        INVALID_POSTAL_CODE: false,
+        INVALID_LOCALITY: false,
+        INVALID_CITY: false,
+        INVALID_STATE: false,
+        INVALID_LANDMARK: false,
+      });
+      Alert.alert('success!', 'New Address added successfully', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => probs.navigation.goBack()},
+      ]);
+    }
   };
   return (
     <View style={styles.container}>
@@ -289,6 +381,17 @@ const AddressScreen = probs => {
         </View>
 
         <View style={styles.topmap}>
+          <RadioForm
+            radio_props={radio_props}
+            formHorizontal={true}
+            initial={0}
+            onPress={value => {
+              SetAddressType(value);
+            }}
+            selectedButtonColor={globalcolor.PrimaryColor}
+            buttonColor={globalcolor.PrimaryColor}
+            style={{marginBottom: 20, marginLeft: 20}}
+          />
           <Text style={globalstyle.LableText}>First Name</Text>
           <View style={globalstyle.ListrowAccount}>
             <TextInput
@@ -305,6 +408,13 @@ const AddressScreen = probs => {
               onChangeText={val => handalFirstname(val)}
             />
           </View>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_NAME ? null : {display: 'none'},
+            ]}>
+            Please enter a valid name
+          </Text>
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>Last Name</Text>
@@ -323,6 +433,13 @@ const AddressScreen = probs => {
               onChangeText={val => handalLastname(val)}
             />
           </View>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_NAME ? null : {display: 'none'},
+            ]}>
+            Please enter a valid name
+          </Text>
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>Mobile Number</Text>
@@ -342,6 +459,13 @@ const AddressScreen = probs => {
               onChangeText={val => handalMobileNumber(val)}
             />
           </View>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_MOBILE ? null : {display: 'none'},
+            ]}>
+            Please enter a valid mobile no
+          </Text>
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>Pincode</Text>
@@ -360,6 +484,13 @@ const AddressScreen = probs => {
               onChangeText={val => handalPincode(val)}
             />
           </View>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_POSTAL_CODE ? null : {display: 'none'},
+            ]}>
+            Please enter a valid PIN code
+          </Text>
         </View>
 
         <View style={styles.Listheight}>
@@ -380,6 +511,13 @@ const AddressScreen = probs => {
               value={data.Area}
             />
           </View>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_LOCALITY ? null : {display: 'none'},
+            ]}>
+            Please enter a valid locality name
+          </Text>
         </View>
 
         <View style={styles.Listheight}>
@@ -400,19 +538,34 @@ const AddressScreen = probs => {
               value={data.City}
             />
           </View>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_CITY ? null : {display: 'none'},
+            ]}>
+            Please enter a valid City
+          </Text>
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>State</Text>
-
           <Picker
-            selectedValue={selectedLanguage}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedLanguage(itemValue)
-            }>
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
-            <Picker.Item label="CSS" value="CSS" />
+            selectedValue={selectedState}
+            onValueChange={(itemValue, itemIndex) => setStateCode(itemValue)}>
+            {AllStates.map((value, index) => (
+              <Picker.Item
+                label={value.state}
+                value={value.stateCode}
+                key={index}
+              />
+            ))}
           </Picker>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_STATE ? null : {display: 'none'},
+            ]}>
+            Please select a state
+          </Text>
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>Landmark</Text>
@@ -432,6 +585,13 @@ const AddressScreen = probs => {
               // value={UserData.address[0].landmark}
             />
           </View>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_LANDMARK ? null : {display: 'none'},
+            ]}>
+            Please enter a valid landmark
+          </Text>
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>Alternative Number</Text>
@@ -570,5 +730,9 @@ const styles = StyleSheet.create({
 
   topmap: {
     marginTop: 260,
+  },
+  errorMsg: {
+    marginLeft: 10,
+    color: globalcolor.Errorcolor,
   },
 });

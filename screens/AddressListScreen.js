@@ -60,7 +60,13 @@ export default function TabViewExample({navigation}) {
     }
 
     fetchMyAPI();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchMyAPI();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   const OrderStatus = Status => {
     let StatusCode = '';
@@ -104,7 +110,7 @@ export default function TabViewExample({navigation}) {
     }
     //console.log(globalcolor.ImageBaseUrl+item.photos[0].path);
     return (
-      <TouchableOpacity key={index}>
+      <View key={index}>
         <View
           style={{
             flex: 1,
@@ -139,7 +145,7 @@ export default function TabViewExample({navigation}) {
             />
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
   const ItemViewRewards = ({item}) => {
