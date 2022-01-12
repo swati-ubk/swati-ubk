@@ -61,6 +61,7 @@ import RequestPayout from './screens/RequestPayout';
 import NotificationScreen from './screens/NotificationScreen';
 import TabaddToCart from './screens/TabaddToCart';
 import AddressListScreen from './screens/AddressListScreen';
+import UpdateaddressScreen from './screens/UpdateaddressScreen';
 const Drawer = createDrawerNavigator();
 
 let name = null;
@@ -317,6 +318,10 @@ const YourApp = () => {
                 component={NotificationScreen}
               />
               <Drawer.Screen name="TabaddToCart" component={TabaddToCart} />
+              <Drawer.Screen
+                name="UpdateaddressScreen"
+                component={UpdateaddressScreen}
+              />
             </Drawer.Navigator>
           ) : (
             <RootStackScreen />

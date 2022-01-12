@@ -101,7 +101,7 @@ export default function TabViewExample({navigation}) {
   };
 
   const ItemView = ({item}) => {
-    console.log('Items..', item);
+    console.log('Items..', item.id);
     let AddressType = '';
     if (item.addressType == 'HOME') {
       AddressType = 'home';
@@ -136,7 +136,14 @@ export default function TabViewExample({navigation}) {
               name="edit"
               color={globalcolor.PrimaryColor}
               size={30}
+              onPress={() =>
+                navigation.navigate('UpdateaddressScreen', {
+                  data: item,
+                  AddressId: item.id,
+                })
+              }
             />
+
             <FontAwesome
               style={{padding: 2}}
               name="trash-o"
@@ -148,42 +155,6 @@ export default function TabViewExample({navigation}) {
       </View>
     );
   };
-  const ItemViewRewards = ({item}) => {
-    //console.log(globalcolor.ImageBaseUrl+item.photos[0].path);
-    return (
-      <TouchableOpacity
-        //onPress={() => {navigation.navigate('RewardsProductListScreen') }}
-        key={index}>
-        <View style={{flex: 1, flexDirection: 'row', padding: 15}}>
-          <View style={{flex: 0.6}}>
-            <Text>{Moment(item.createdAt).format('DD MMM YYYY')}</Text>
-            <Text
-              style={[styles.OrderText, {fontSize: 14, fontWeight: 'bold'}]}>
-              {' '}
-              {item.orderId}
-            </Text>
-            <Text style={[styles.OrderText, {fontSize: 14}]}>
-              <Image
-                source={require('../assets/img/coin.png')} //Change your icon image here
-                style={globalstyle.CoinIcon}
-              />{' '}
-              {item.totalPriceInCoins}
-            </Text>
-          </View>
-          <View style={{flex: 0.3}}>{OrderStatus(item.orderState)}</View>
-          <View style={{flex: 0.1}}>
-            <FontAwesome
-              style={{alignSelf: 'flex-end'}}
-              name="chevron-right"
-              color={globalcolor.SeconderFontColor}
-              size={20}
-            />
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   const ItemSeparatorView = () => {
     return (
       // Flat List Item Separator
@@ -206,13 +177,7 @@ export default function TabViewExample({navigation}) {
     navigation.goBack();
     return true;
   }
-  const renderTabBar = props => (
-    <TabBar
-      {...props}
-      indicatorStyle={{backgroundColor: globalcolor.Textcolor}}
-      style={{backgroundColor: globalcolor.PrimaryColor}}
-    />
-  );
+
   return (
     <View style={styles.container}>
       {/*------------BACK BUTTON START------------------*/}
