@@ -10,6 +10,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
 import {globalstyle} from '../style/globals.js';
@@ -38,6 +39,7 @@ export default function TabViewExample({navigation}) {
       try {
         let userToken = await AsyncStorage.getItem('userToken');
         console.log('userToken.....', userToken);
+        SetToken(userToken);
         const requestOptions = {
           method: 'GET',
           headers: {
@@ -68,38 +70,37 @@ export default function TabViewExample({navigation}) {
     return unsubscribe;
   }, [navigation]);
 
-  const OrderStatus = Status => {
-    let StatusCode = '';
-    let ColorBorder = '';
-    let Colortext = '';
-    if (Status == 'COMPLETE') {
-      StatusCode = 'DELIVERED';
-      ColorBorder = globalcolor.SuccessLight;
-      Colortext = globalcolor.Successcolor;
-    } else if (Status == 'PROCESSING') {
-      StatusCode = 'IN PROCESS';
-      ColorBorder = globalcolor.ProgessColorLight;
-      Colortext = globalcolor.ProgessColor;
-    } else {
-      StatusCode = 'WAITING';
-      ColorBorder = globalcolor.PrimaryColorLight;
-      Colortext = globalcolor.PrimaryColor;
-    }
-    return (
-      <View
-        style={{
-          alignSelf: 'center',
-          borderWidth: 1,
-          padding: 5,
-          borderColor: ColorBorder,
-        }}>
-        <Text style={{fontFamily: globalcolor.Font, color: Colortext}}>
-          {StatusCode}
-        </Text>
-      </View>
+  const DeleteAddress = AddressId => {
+    Alert.alert(
+      'Remove Address!',
+      'Are you sure! Do you want to remove the address ?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => removeAddress(AddressId)},
+      ],
     );
   };
-
+  const removeAddress = async AddressId => {
+    const requestOptions = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + Token,
+      },
+      // body: JSON.stringify(Bodydata),
+    };
+    const response = await WebService.PostData(
+      'address/' + AddressId,
+      requestOptions,
+    );
+    const resJson = await response.json();
+    setDataSource(resJson.user.address);
+    // console.log('delete response Data..', resJson);
+  };
   const ItemView = ({item}) => {
     console.log('Items..', item.id);
     let AddressType = '';
@@ -149,6 +150,7 @@ export default function TabViewExample({navigation}) {
               name="trash-o"
               color={globalcolor.PrimaryColor}
               size={30}
+              onPress={() => DeleteAddress(item.id)}
             />
           </View>
         </View>

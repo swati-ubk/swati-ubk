@@ -392,7 +392,9 @@ const AddressScreen = probs => {
             buttonColor={globalcolor.PrimaryColor}
             style={{marginBottom: 20, marginLeft: 20}}
           />
-          <Text style={globalstyle.LableText}>First Name</Text>
+          <Text style={globalstyle.LableText}>
+            Full name (First and Last name)
+          </Text>
           <View style={globalstyle.ListrowAccount}>
             <TextInput
               placeholder="Name"
@@ -416,36 +418,12 @@ const AddressScreen = probs => {
             Please enter a valid name
           </Text>
         </View>
-        <View style={styles.Listheight}>
-          <Text style={globalstyle.LableText}>Last Name</Text>
-          <View style={globalstyle.ListrowAccount}>
-            <TextInput
-              placeholder="Rahul"
-              placeholderTextColor="#666666"
-              //secureTextEntry={data.secureTextEntry ? true : false}
-              style={[
-                globalstyle.textInput,
-                {
-                  // color: colors.text,
-                },
-              ]}
-              autoCapitalize="none"
-              onChangeText={val => handalLastname(val)}
-            />
-          </View>
-          <Text
-            style={[
-              styles.errorMsg,
-              data.INVALID_NAME ? null : {display: 'none'},
-            ]}>
-            Please enter a valid name
-          </Text>
-        </View>
+
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>Mobile Number</Text>
           <View style={globalstyle.ListrowAccount}>
             <TextInput
-              placeholder="+91 6858562565"
+              placeholder="10 digit Mobile Number"
               placeholderTextColor="#666666"
               // secureTextEntry={data.secureTextEntry ? true : false}
               style={[
@@ -482,6 +460,7 @@ const AddressScreen = probs => {
               ]}
               autoCapitalize="none"
               onChangeText={val => handalPincode(val)}
+              keyboardType="number-pad"
             />
           </View>
           <Text

@@ -66,6 +66,7 @@ const UpdateaddressScreen = probs => {
     INVALID_CITY: false,
     INVALID_STATE: false,
     INVALID_LANDMARK: false,
+    INVALID_ALTERNATE_MOBILE: false,
   });
   var radio_props = [
     {label: 'HOME ', value: 'HOME'},
@@ -277,6 +278,7 @@ const UpdateaddressScreen = probs => {
 
     if (resJson.hasOwnProperty('errors')) {
       // console.log('update address...', resJson);
+
       resJson.errors.forEach(element => {
         //   console.log('element....', element);
         if (element.code == 'INVALID_NAME') {
@@ -321,6 +323,20 @@ const UpdateaddressScreen = probs => {
           setData({
             ...data,
             INVALID_LANDMARK: true,
+          });
+        }
+        if (element.code == 'INVALID_ALTERNATE_MOBILE') {
+          Alert.alert('Ohh!', 'Please enter a vallid Alternate number', [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {text: 'YES'},
+          ]);
+          setData({
+            ...data,
+            INVALID_ALTERNATE_MOBILE: true,
           });
         }
       });
@@ -592,13 +608,6 @@ const UpdateaddressScreen = probs => {
               value={data.LandMark}
             />
           </View>
-          <Text
-            style={[
-              styles.errorMsg,
-              data.INVALID_LANDMARK ? null : {display: 'none'},
-            ]}>
-            Please enter a valid landmark
-          </Text>
         </View>
         <View style={styles.Listheight}>
           <Text style={globalstyle.LableText}>Alternative Number</Text>
@@ -620,6 +629,13 @@ const UpdateaddressScreen = probs => {
               // value={UserData.address[0].alternateMobileNo}
             />
           </View>
+          <Text
+            style={[
+              styles.errorMsg,
+              data.INVALID_ALTERNATE_MOBILE ? null : {display: 'none'},
+            ]}>
+            Please enter a valid alernate mobile number
+          </Text>
         </View>
       </ScrollView>
 
