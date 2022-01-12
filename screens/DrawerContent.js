@@ -66,12 +66,12 @@ export function DrawerContent(props) {
   ///console.log( AuthContext.getItem());
   console.log(
     'sdsdsds....',
-    JSON.stringify(props.userData.memberships[0].plan),
+    // JSON.stringify(props.userData.memberships[0].plan),
   );
   let userType = 'Free';
-  if (props.userData.memberships[0].plan === 'USER_PREMIUM') {
-    userType = 'Premium';
-  }
+  // if (props.userData.memberships[0].plan === 'USER_PREMIUM') {
+  //   userType = 'Premium';
+  // }
 
   return (
     <View style={{flex: 1}}>
