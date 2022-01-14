@@ -117,6 +117,7 @@ export default class RewardsProductListScreen extends React.Component {
     )
       .then(res => res.json())
       .then(resJson => {
+        console.log("----------888--",resJson.length)
         if (resJson.length > 0) {
           resJson.forEach(element => {
             //   console.log("element...",element);
@@ -139,9 +140,10 @@ export default class RewardsProductListScreen extends React.Component {
             offset: this.state.offset + 1,
           });
         } else {
+          console.log("----------99999--",resJson.length)
           // this.setState({category:this.props.route.params.Catvalue})
 
-          this.setState({loadmore: false, refreshing: false, data: []});
+          this.setState({loadmore: false, loading:false,refreshing: false, data: []});
         }
       })
       .catch(e => console.log(e));
@@ -160,7 +162,7 @@ export default class RewardsProductListScreen extends React.Component {
           console.log(JSON.stringify(response));
           this.setState({data: response, refreshing: false});
         } else {
-          this.setState({data: [], refreshing: false, noserachItem: false});
+          this.setState({data: [], refreshing: false, noserachItem: false, loading:false});
         }
       });
     } else {
@@ -190,7 +192,11 @@ export default class RewardsProductListScreen extends React.Component {
     }
     // console.log(imageUrl);
 
+   // console.log("---5555-----------",""+data.item.priceInCoins)
     return (
+
+
+
       <TouchableOpacity
         onPress={() =>
           this.props.navigation.navigate('RewardsDetails', {
@@ -415,12 +421,24 @@ export default class RewardsProductListScreen extends React.Component {
         </SafeAreaView>
       );
     } else {
+
+      console.log("===555999====",""+this.state.data)
+      console.log("===555999====",""+this.state.loading)
+
       return (
+
         <View style={globalstyle.ActivityContainer}>
+              { this.state.loading === true ?
+          <View>
           {this.ActivityIndicatorShow()}
           <Text style={globalstyle.ActivityIndicator}>
             Loading please wait....
           </Text>
+          </View>
+          :
+          <Text style={globalstyle.ActivityIndicator}>
+            No Data In This Category</Text>
+              }
         </View>
       );
     }
