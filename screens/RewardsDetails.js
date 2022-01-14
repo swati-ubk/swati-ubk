@@ -20,6 +20,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Rating} from 'react-native-ratings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThemeProvider} from 'react-native-paper';
+import {Picker} from '@react-native-picker/picker';
+
 export default class RewardsDetails extends React.Component {
   constructor(props) {
     console.log('RewardsDeatils...', props);
@@ -35,9 +37,13 @@ export default class RewardsDetails extends React.Component {
       localcartReword: [],
       CartCount: 0,
       TotalCartCoin: 0,
+      productSize:""
     };
   }
-
+  updateProductSize = (productSize) => {
+    console.log("asdadasdad",""+productSize)
+    this.setState({ productSize: productSize })
+ }
   async componentDidMount() {
     this.importData();
     this.setState({loading: true});
@@ -72,6 +78,8 @@ export default class RewardsDetails extends React.Component {
 
   importData = async () => {
     try {
+
+     /// console.log("sda999.....","....."+this.state.productSize)
       const keys = await AsyncStorage.getAllKeys();
 
       const itemsArray = await AsyncStorage.multiGet(keys);
@@ -97,7 +105,7 @@ export default class RewardsDetails extends React.Component {
         console.log('okkk-------------');
       } else {
         console.log('okkk222222-------------');
-        console.log('=======' + JSON.stringify(JSON.parse(data22).ubk));
+       // console.log('=======' + JSON.stringify(JSON.parse(data22).ubk));
 
         let data = JSON.parse(data22);
         /// let ppp= data.filter(data => data.id == "5f7038c2742515372619506f");
@@ -107,16 +115,23 @@ export default class RewardsDetails extends React.Component {
           ddddddd => ddddddd.productId == this.state.ProductID,
         );
 
-        console.log('okkk33333333-------------' + this.state.ProductID);
+        //console.log('okkk33333333-------------' + ddddddd);
+      ///  console.log('okkk333333331-------------' , JSON.parse(ppp));
         if (ppp.length == 0) {
           this.setState({
             cartname: 'ADD TO CART',
+            productSize: ""
           });
         } else {
+
+         // console.log("111----------------",""+ppp[0].size)
           this.setState({
             cartname: 'GO TO CART',
+            productSize: ppp[0].size
           });
         }
+
+        console.log("sda9991.....","....."+this.state.productSize)
       }
     } catch (error) {
       console.error(error);
@@ -125,17 +140,27 @@ export default class RewardsDetails extends React.Component {
 
   RewordCart = async product => {
     console.log('sdasdass----------', this.state.cartname);
+    console.log('sdasdass----------', this.state.ProductID);
+    console.log('sdasdass-11---------', this.state.productSize);
+
 
     if (this.state.cartname == 'GO TO CART') {
       const keys = await AsyncStorage.getAllKeys();
       const itemsArray = await AsyncStorage.multiGet(keys);
       let object = {};
       itemsArray.map(item => {
-        console.log('-------222----------', `${item[0]}`); //count
+         //count
         if (`${item[0]}` == 'RewordCart') {
-          // console.log("llllllllllllllllllllllllllllllll",item[1])
-          object = JSON.parse(item[1]);
-          //console.log("llllllllllllllllllllllllllllllll",object)
+         
+         var produuu=JSON.parse(item[1])
+          const index = produuu.map(function(x) {return x.productId; }).indexOf(this.state.ProductID);
+          produuu[index].size = this.state.productSize;
+          console.log('-------222----------',produuu);
+           console.log("9999999",produuu)
+
+           object = produuu;
+         // object = JSON.parse(produuu);
+          console.log("777777777",object)
         }
       });
       console.log('RewardsLocal cart', object);
@@ -176,7 +201,7 @@ export default class RewardsDetails extends React.Component {
         data_obj = [
           {
             name: product[0].productName,
-            size: product[0].availableSize[0],
+            size: this.state.productSize,
             quantity: 1,
             priceInCoins: product[0].priceInCoins,
             productId: product[0].id,
@@ -187,7 +212,7 @@ export default class RewardsDetails extends React.Component {
       } else {
         data_obj = {
           name: product[0].productName,
-          size: product[0].availableSize[0],
+          size: this.state.productSize,
           quantity: 1,
           priceInCoins: product[0].priceInCoins,
           productId: product[0].id,
@@ -304,9 +329,30 @@ export default class RewardsDetails extends React.Component {
     // let data=this.state.localcartReword;
     //let ppp= data.filter(data => data.id == "5f7038c2742515372619506f");
     ///console.log("=========gagsgasppp=========",ppp);
+   
 
     if (this.state.data.length > 0) {
       // this.state.data.isBoomPartner?this.shopNow('Active'):''
+
+      // var productSize = [];
+
+      // for(let i = 0; i < noGuest; i++){
+        
+      // }
+      console.log("........11......"+this.state.data[0].availableSize.length)
+
+      if(this.state.productSize=="")
+      {
+         if(this.state.data[0].availableSize.length>0)
+        {
+          this.setState({ productSize: this.state.data[0].availableSize[0] });
+          //console.log("........1......"+this.state.data[0].availableSize[0])
+        }
+
+      }
+   
+   
+      //this.state.data[0].availableSize
 
       return (
         <SafeAreaView style={styles.container}>
@@ -398,30 +444,75 @@ export default class RewardsDetails extends React.Component {
                     {this.state.data[0].priceInCoins}
                   </Text>
                 </View>
+                { this.state.data[0].availableSize.length != 0 ?
+               
+                  <View style={{width: '100%', flexDirection: 'row'}}>
                 <View style={{width: '15%', marginTop: 5}}>
                   <Text style={{fontFamily: globalcolor.Font, fontSize: 20}}>
-                    Size
+                    Size 
                   </Text>
                 </View>
-                <View
-                  style={{
-                    width: '13%',
-                    marginTop: 5,
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    borderColor: globalcolor.PrimaryColor,
-                  }}>
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      fontFamily: globalcolor.Font,
-                      fontSize: 14,
-                      padding: 5,
-                      color: globalcolor.PrimaryColor,
-                    }}>
-                    Free
-                  </Text>
+                { this.state.data[0].availableSize.length != 1 ?
+                               <View style={{
+                                width: '35%',
+                                marginTop: -7,
+                                borderWidth: 1,
+                                borderRadius: 5,
+                                marginEnd:15,
+                                borderColor: globalcolor.PrimaryColor,
+                              }}
+                               >
+                    
+                   
+                    
+                     <Picker
+                        mode='dropdown'
+                        selectedValue={this.state.productSize}
+                        onValueChange = {this.updateProductSize}
+                        //onValueChange={(itemValue, itemIndex) => this.updateProductSize(itemValue)}
+                        >
+
+                  
+                        {this.state.data[0].availableSize.map((value, index) => (
+                          <Picker.Item
+                         // label="Java" 
+                     //// value="java"
+                            label={value}
+                            value={value}
+                            key={index}
+                          />
+                        ))} 
+                      </Picker>
+                     
+                     
                 </View>
+
+                     :
+                     <View
+                     style={{
+                       width: '13%',
+                       marginTop: 5,
+                       borderWidth: 1,
+                       borderRadius: 5,
+                       borderColor: globalcolor.PrimaryColor,
+                     }}>
+                     <Text
+                       style={{
+                         alignSelf: 'center',
+                         fontFamily: globalcolor.Font,
+                         fontSize: 14,
+                         padding: 5,
+                         color: globalcolor.PrimaryColor,
+                       }}>
+                       Free
+                     </Text>
+                   </View>
+                    }
+                    </View>
+                       :
+                       <Text></Text>
+                        }
+
               </View>
               <View
                 style={{

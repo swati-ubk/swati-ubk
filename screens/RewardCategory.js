@@ -60,6 +60,7 @@ const RewardCategory = ({navigation}) => {
           .then(response => response.json())
           .then(response => {
             console.log('Me data..', JSON.stringify(response.user.promoCoins));
+            
             setCoin(response.user.promoCoins);
           });
 
