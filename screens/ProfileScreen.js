@@ -77,14 +77,18 @@ const ProfileScreen = ({navigation}) => {
         let alldata = JSON.parse(userdata);
         console.log('All data......', alldata);
 
-        setImage(ConfigFile.ImageBaseUrl + alldata.profilePic.path);
-        SetCoverImage(ConfigFile.ImageBaseUrl + alldata.coverPic.path);
+        if (alldata.profilePic.hasOwnProperty('path')) {
+          setImage(ConfigFile.ImageBaseUrl + alldata.profilePic.path);
+        }
+        if (alldata.coverPic.hasOwnProperty('path')) {
+          SetCoverImage(ConfigFile.ImageBaseUrl + alldata.coverPic.path);
+        }
 
         // setImage(ConfigFile.ImageBaseUrl+alldata.profilePic.path);
-        console.log(
-          'profilePic.....',
-          ConfigFile.ImageBaseUrl + alldata.profilePic.path,
-        );
+        // console.log(
+        //   'profilePic.....',
+        //   ConfigFile.ImageBaseUrl + alldata.profilePic.path,
+        // );
       } catch (e) {
         console.log(e);
       }
