@@ -10,7 +10,6 @@ import {
   TextInput,
   ScrollView,
   ImageBackground,
-  ActivityIndicator,
 } from 'react-native';
 import {globalstyle} from '../style/globals.js';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -38,7 +37,7 @@ const BankAccountScreen = ({navigation}) => {
   const [BanKStatenentData, SetBanKStatenentData] = useState({});
   const [PanImageData, SetPanImageData] = useState({});
   const [loading, Setloading] = useState(false);
-  const [Token, SetToken] = useState(false);
+  const [Token, SetToken] = useState('');
   const [ChooseType, SetChooseType] = useState('');
   const [data, setData] = React.useState({
     accountNumber: '',
@@ -71,7 +70,6 @@ const BankAccountScreen = ({navigation}) => {
   useEffect(() => {
     async function fetchMyAPI() {
       try {
-        Setloading(true);
         let userToken = await AsyncStorage.getItem('userToken');
         console.log('userToken.....', userToken);
         SetToken(userToken);
@@ -86,7 +84,7 @@ const BankAccountScreen = ({navigation}) => {
         WebService.PostData('me', requestOptions)
           .then(res => res.json())
           .then(resJson => {
-            Setloading(false);
+            // return resJson;
             console.log(
               'Bank Account details...............',
               resJson.user.bankAccount,
@@ -176,23 +174,7 @@ const BankAccountScreen = ({navigation}) => {
       }
     });
   };
-  const ActivityIndicatorShow = () => {
-    return (
-      <View>
-        {loading ? (
-          <ActivityIndicator
-            size="large"
-            color={globalcolor.PrimaryColor}
-            style={{
-              marginTop: 50,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          />
-        ) : null}
-      </View>
-    );
-  };
+
   const choosePhotoFromLibrary = () => {
     launchImageLibrary(options, response => {
       if (response.didCancel) {
@@ -218,7 +200,7 @@ const BankAccountScreen = ({navigation}) => {
       'ChooseType......',
       ConfigFile.BaseUrl + `upload?mode=${ChooseType}`,
     );
-    // Setloading(true);
+    Setloading(true);
     console.log('upload function ----', response.uri);
 
     var photo = {
@@ -383,304 +365,281 @@ const BankAccountScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {loading ? (
-        <View>
-          {ActivityIndicatorShow()}
-          <Text style={globalstyle.ActivityIndicator}>
-            Loading please wait....
+      {/*------------BACK BUTTON START------------------*/}
+      <View style={[globalstyle.BackButton]}>
+        <TouchableOpacity onPress={() => handleBackButtonClick()}>
+          <View style={{flex: 0.4, marginRight: 20}}>
+            <FontAwesome
+              name="arrow-left"
+              color={globalcolor.PrimaryColor}
+              size={20}
+            />
+          </View>
+        </TouchableOpacity>
+        <View style={{flex: 0.6}}>
+          <Text
+            style={{
+              color: globalcolor.PrimaryColor,
+              fontFamily: globalcolor.Font,
+              fontSize: 20,
+            }}>
+            Bank Account
           </Text>
         </View>
-      ) : (
-        <View>
-          {/*------------BACK BUTTON START------------------*/}
-          <View style={[globalstyle.BackButton]}>
-            <TouchableOpacity onPress={() => handleBackButtonClick()}>
-              <View style={{flex: 0.4, marginRight: 20}}>
+      </View>
+      {/*------------BACK BUTTON END------------------*/}
+      <ScrollView>
+        <BottomSheet
+          ref={this.bs}
+          snapPoints={[330, 0]}
+          renderContent={this.renderInner}
+          renderHeader={this.renderHeader}
+          initialSnap={1}
+          callbackNode={this.fall}
+          enabledGestureInteraction={true}
+        />
+        <Animated.View
+          style={{
+            //```  margin: 20,
+            opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
+          }}>
+          <View style={styles.Listheight}>
+            <Text style={globalstyle.LableText}>Enter Account Number</Text>
+            <View style={globalstyle.ListrowAccount}>
+              <TextInput
+                placeholder=""
+                placeholderTextColor="#666666"
+                //secureTextEntry={data.secureTextEntry ? true : false}
+                style={[
+                  globalstyle.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={val => handleaccountNumber(val)}
+                value={data.accountNumber}
+                editable={
+                  data.status == 'APPROVED' || data.status == 'PENDING'
+                    ? false
+                    : true
+                }
+              />
+            </View>
+            {data.INVALID_ACCOUNT_NUMBER ? (
+              <Text style={[styles.errorMsg]}>
+                Please enter a valid account number
+              </Text>
+            ) : null}
+          </View>
+          <View style={styles.Listheight}>
+            <Text style={globalstyle.LableText}>Confirm Account Number</Text>
+            <View style={globalstyle.ListrowAccount}>
+              <TextInput
+                placeholder=""
+                placeholderTextColor="#666666"
+                //secureTextEntry={data.secureTextEntry ? true : false}
+                style={[
+                  globalstyle.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={val => handleConfirmaccountNumber(val)}
+                value={data.ConfirmAccountNo}
+                editable={
+                  data.status == 'APPROVED' || data.status == 'PENDING'
+                    ? false
+                    : true
+                }
+              />
+            </View>
+            {data.INVALID_CONFIRM_ACCOUNT_NUMBER ? (
+              <Text style={[styles.errorMsg]}>
+                Please confirm the account number. The account numbers must
+                match
+              </Text>
+            ) : null}
+          </View>
+          <View style={styles.Listheight}>
+            <Text style={globalstyle.LableText}>IFSC Code</Text>
+            <View style={globalstyle.ListrowAccount}>
+              <TextInput
+                placeholder=""
+                placeholderTextColor="#666666"
+                // secureTextEntry={data.secureTextEntry ? true : false}
+                style={[
+                  globalstyle.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={val => handleIfsc(val)}
+                value={data.ifsc}
+                editable={
+                  data.status == 'APPROVED' || data.status == 'PENDING'
+                    ? false
+                    : true
+                }
+              />
+            </View>
+            {data.INVALID_IFSC ? (
+              <Text style={[styles.errorMsg]}>Please enter a valid IFSC</Text>
+            ) : null}
+          </View>
+          <View style={styles.Listheight}>
+            <Text style={globalstyle.LableText}>PAN</Text>
+            <View style={globalstyle.ListrowAccount}>
+              <TextInput
+                placeholder="PAN"
+                placeholderTextColor="#666666"
+                // secureTextEntry={data.secureTextEntry ? true : false}
+                style={[
+                  globalstyle.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                value={data.pan}
+                editable={
+                  data.status == 'APPROVED' || data.status == 'PENDING'
+                    ? false
+                    : true
+                }
+                onChangeText={val => handlePanNumber(val)}
+              />
+            </View>
+            {data.INVALID_PAN ? (
+              <Text style={[styles.errorMsg]}>Please enter a valid IFSC</Text>
+            ) : null}
+          </View>
+          {data.status == 'APPROVED' ? (
+            <View
+              style={[
+                styles.ApprovedMsg,
+                {borderColor: globalcolor.SuccessLight},
+              ]}>
+              <Text style={{color: globalcolor.Successcolor, fontSize: 20}}>
+                {' '}
                 <FontAwesome
-                  name="arrow-left"
-                  color={globalcolor.PrimaryColor}
+                  name="check-circle-o"
+                  color={globalcolor.Successcolor}
                   size={20}
-                />
-              </View>
-            </TouchableOpacity>
-            <View style={{flex: 0.6}}>
-              <Text
-                style={{
-                  color: globalcolor.PrimaryColor,
-                  fontFamily: globalcolor.Font,
-                  fontSize: 20,
-                }}>
-                Bank Account
+                />{' '}
+                Approved
               </Text>
             </View>
-          </View>
-          {/*------------BACK BUTTON END------------------*/}
-          <ScrollView>
-            <BottomSheet
-              ref={this.bs}
-              snapPoints={[330, 0]}
-              renderContent={this.renderInner}
-              renderHeader={this.renderHeader}
-              initialSnap={1}
-              callbackNode={this.fall}
-              enabledGestureInteraction={true}
-            />
-            <Animated.View
-              style={{
-                //```  margin: 20,
-                opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
-              }}>
-              <View style={styles.Listheight}>
-                <Text style={globalstyle.LableText}>Enter Account Number</Text>
-                <View style={globalstyle.ListrowAccount}>
-                  <TextInput
-                    placeholder=""
-                    placeholderTextColor="#666666"
-                    //secureTextEntry={data.secureTextEntry ? true : false}
-                    style={[
-                      globalstyle.textInput,
-                      {
-                        color: colors.text,
-                      },
-                    ]}
-                    autoCapitalize="none"
-                    onChangeText={val => handleaccountNumber(val)}
-                    value={data.accountNumber}
-                    editable={
-                      data.status == 'APPROVED' || data.status == 'PENDING'
-                        ? false
-                        : true
-                    }
-                  />
-                </View>
-                {data.INVALID_ACCOUNT_NUMBER ? (
-                  <Text style={[styles.errorMsg]}>
-                    Please enter a valid account number
-                  </Text>
-                ) : null}
-              </View>
-              <View style={styles.Listheight}>
-                <Text style={globalstyle.LableText}>
-                  Confirm Account Number
-                </Text>
-                <View style={globalstyle.ListrowAccount}>
-                  <TextInput
-                    placeholder=""
-                    placeholderTextColor="#666666"
-                    //secureTextEntry={data.secureTextEntry ? true : false}
-                    style={[
-                      globalstyle.textInput,
-                      {
-                        color: colors.text,
-                      },
-                    ]}
-                    autoCapitalize="none"
-                    onChangeText={val => handleConfirmaccountNumber(val)}
-                    value={data.ConfirmAccountNo}
-                    editable={
-                      data.status == 'APPROVED' || data.status == 'PENDING'
-                        ? false
-                        : true
-                    }
-                  />
-                </View>
-                {data.INVALID_CONFIRM_ACCOUNT_NUMBER ? (
-                  <Text style={[styles.errorMsg]}>
-                    Please confirm the account number. The account numbers must
-                    match
-                  </Text>
-                ) : null}
-              </View>
-              <View style={styles.Listheight}>
-                <Text style={globalstyle.LableText}>IFSC Code</Text>
-                <View style={globalstyle.ListrowAccount}>
-                  <TextInput
-                    placeholder=""
-                    placeholderTextColor="#666666"
-                    // secureTextEntry={data.secureTextEntry ? true : false}
-                    style={[
-                      globalstyle.textInput,
-                      {
-                        color: colors.text,
-                      },
-                    ]}
-                    autoCapitalize="none"
-                    onChangeText={val => handleIfsc(val)}
-                    value={data.ifsc}
-                    editable={
-                      data.status == 'APPROVED' || data.status == 'PENDING'
-                        ? false
-                        : true
-                    }
-                  />
-                </View>
-                {data.INVALID_IFSC ? (
-                  <Text style={[styles.errorMsg]}>
-                    Please enter a valid IFSC
-                  </Text>
-                ) : null}
-              </View>
-              <View style={styles.Listheight}>
-                <Text style={globalstyle.LableText}>PAN</Text>
-                <View style={globalstyle.ListrowAccount}>
-                  <TextInput
-                    placeholder="PAN"
-                    placeholderTextColor="#666666"
-                    // secureTextEntry={data.secureTextEntry ? true : false}
-                    style={[
-                      globalstyle.textInput,
-                      {
-                        color: colors.text,
-                      },
-                    ]}
-                    autoCapitalize="none"
-                    value={data.pan}
-                    editable={
-                      data.status == 'APPROVED' || data.status == 'PENDING'
-                        ? false
-                        : true
-                    }
-                    onChangeText={val => handlePanNumber(val)}
-                  />
-                </View>
-                {data.INVALID_PAN ? (
-                  <Text style={[styles.errorMsg]}>
-                    Please enter a valid IFSC
-                  </Text>
-                ) : null}
-              </View>
-              {data.status == 'APPROVED' ? (
-                <View
-                  style={[
-                    styles.ApprovedMsg,
-                    {borderColor: globalcolor.SuccessLight},
-                  ]}>
-                  <Text style={{color: globalcolor.Successcolor, fontSize: 20}}>
-                    {' '}
-                    <FontAwesome
-                      name="check-circle-o"
-                      color={globalcolor.Successcolor}
-                      size={20}
-                    />{' '}
-                    Approved
-                  </Text>
-                </View>
-              ) : null}
-              {data.status == 'PENDING' ? (
-                <View
-                  style={[
-                    styles.ApprovedMsg,
-                    {borderColor: globalcolor.Errorcolor},
-                  ]}>
-                  <Text style={{color: globalcolor.Errorcolor, fontSize: 20}}>
-                    {' '}
-                    <FontAwesome
-                      name="times"
-                      color={globalcolor.Errorcolor}
-                      size={20}
-                    />{' '}
-                    Pending
-                  </Text>
-                </View>
-              ) : null}
-              {data.status == 'APPROVED' || data.status == 'PENDING' ? null : (
-                <View style={[styles.Listheight]}>
-                  <Text style={globalstyle.LableText}>Bank Statement</Text>
-                  <TouchableOpacity
-                    onPress={() => OpenFooterpopup('user-bank-statement')}>
-                    <View
-                      style={[
-                        globalstyle.coverphoto,
-                        {
-                          marginLeft: 15,
-                          marginRight: 15,
-                          marginTop: 20,
-                          height: 120,
-                        },
-                      ]}>
-                      <ImageBackground
-                        source={{uri: BankStatement}}
-                        resizeMode="cover"
-                        style={styles.Coverimage}></ImageBackground>
-                      <Image
-                        source={require('../assets/img/cloud-computing.png')} //Change your icon image here
-                        style={[globalstyle.UploadIocn, {alignSelf: 'center'}]}
-                      />
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontFamily: globalcolor.Font,
-                        }}>
-                        Upload Bank Statement
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <Text
-                    style={[
-                      styles.errorMsg,
-                      data.INVALID_BANK_STATEMENT ? null : {display: 'none'},
-                    ]}>
-                    Please upload a bank statement or passbook front page
-                    clearly stating your account number and name on it
-                  </Text>
-                </View>
-              )}
-              {data.status == 'APPROVED' || data.status == 'PENDING' ? null : (
-                <View style={[styles.Listheight]}>
-                  <Text style={globalstyle.LableText}>PAN Card Front</Text>
-                  <TouchableOpacity
-                    onPress={() => OpenFooterpopup('user-pan-card')}>
-                    <View
-                      style={[
-                        globalstyle.coverphoto,
-                        {
-                          marginLeft: 15,
-                          marginRight: 15,
-                          marginTop: 20,
-                          height: 120,
-                        },
-                      ]}>
-                      <ImageBackground
-                        source={{uri: PanImage}}
-                        resizeMode="cover"
-                        style={styles.Coverimage}></ImageBackground>
-                      <Image
-                        source={require('../assets/img/cloud-computing.png')} //Change your icon image here
-                        style={[globalstyle.UploadIocn, {alignSelf: 'center'}]}
-                      />
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontFamily: globalcolor.Font,
-                        }}>
-                        Upload PAN Card
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <Text
-                    style={[
-                      styles.errorMsg,
-                      data.INVALID_PAN_DOCUMENT ? null : {display: 'none'},
-                    ]}>
-                    Please upload a bank statement or passbook front page
-                    clearly stating your account number and name on it
-                  </Text>
-                </View>
-              )}
-            </Animated.View>
-          </ScrollView>
+          ) : null}
+          {data.status == 'PENDING' ? (
+            <View
+              style={[
+                styles.ApprovedMsg,
+                {borderColor: globalcolor.Errorcolor},
+              ]}>
+              <Text style={{color: globalcolor.Errorcolor, fontSize: 20}}>
+                {' '}
+                <FontAwesome
+                  name="times"
+                  color={globalcolor.Errorcolor}
+                  size={20}
+                />{' '}
+                Pending
+              </Text>
+            </View>
+          ) : null}
           {data.status == 'APPROVED' || data.status == 'PENDING' ? null : (
-            <TouchableOpacity
-              onPress={() => {
-                UpdateBankAccount();
-              }}>
-              <View style={globalstyle.FooterTabButton}>
-                <Text style={globalstyle.FooterTabText}>Save</Text>
-              </View>
-            </TouchableOpacity>
+            <View style={[styles.Listheight]}>
+              <Text style={globalstyle.LableText}>Bank Statement</Text>
+              <TouchableOpacity
+                onPress={() => OpenFooterpopup('user-bank-statement')}>
+                <View
+                  style={[
+                    globalstyle.coverphoto,
+                    {
+                      marginLeft: 15,
+                      marginRight: 15,
+                      marginTop: 20,
+                      height: 120,
+                    },
+                  ]}>
+                  <ImageBackground
+                    source={{uri: BankStatement}}
+                    resizeMode="cover"
+                    style={styles.Coverimage}></ImageBackground>
+                  <Image
+                    source={require('../assets/img/cloud-computing.png')} //Change your icon image here
+                    style={[globalstyle.UploadIocn, {alignSelf: 'center'}]}
+                  />
+                  <Text
+                    style={{alignSelf: 'center', fontFamily: globalcolor.Font}}>
+                    Upload Bank Statement
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <Text
+                style={[
+                  styles.errorMsg,
+                  data.INVALID_BANK_STATEMENT ? null : {display: 'none'},
+                ]}>
+                Please upload a bank statement or passbook front page clearly
+                stating your account number and name on it
+              </Text>
+            </View>
           )}
-        </View>
-      )}
+          {data.status == 'APPROVED' || data.status == 'PENDING' ? null : (
+            <View style={[styles.Listheight]}>
+              <Text style={globalstyle.LableText}>PAN Card Front</Text>
+              <TouchableOpacity
+                onPress={() => OpenFooterpopup('user-pan-card')}>
+                <View
+                  style={[
+                    globalstyle.coverphoto,
+                    {
+                      marginLeft: 15,
+                      marginRight: 15,
+                      marginTop: 20,
+                      height: 120,
+                    },
+                  ]}>
+                  <ImageBackground
+                    source={{uri: PanImage}}
+                    resizeMode="cover"
+                    style={styles.Coverimage}></ImageBackground>
+                  <Image
+                    source={require('../assets/img/cloud-computing.png')} //Change your icon image here
+                    style={[globalstyle.UploadIocn, {alignSelf: 'center'}]}
+                  />
+                  <Text
+                    style={{alignSelf: 'center', fontFamily: globalcolor.Font}}>
+                    Upload PAN Card
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <Text
+                style={[
+                  styles.errorMsg,
+                  data.INVALID_PAN_DOCUMENT ? null : {display: 'none'},
+                ]}>
+                Please upload a bank statement or passbook front page clearly
+                stating your account number and name on it
+              </Text>
+            </View>
+          )}
+        </Animated.View>
+      </ScrollView>
+      {data.status == 'APPROVED' || data.status == 'PENDING' ? (
+        <TouchableOpacity
+          onPress={() => {
+            UpdateBankAccount();
+          }}>
+          <View style={globalstyle.FooterTabButton}>
+            <Text style={globalstyle.FooterTabText}>Save</Text>
+          </View>
+        </TouchableOpacity>
+      ) : null}
     </SafeAreaView>
   );
 };

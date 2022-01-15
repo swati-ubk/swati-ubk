@@ -24,7 +24,6 @@ import Moment from 'moment';
 const ExpandableComponent = ({item, onClickFunction}) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
-
   console.log('asdasdadsadasda...', item);
   useEffect(() => {
     if (item.isExpanded) {
@@ -168,6 +167,7 @@ const ReferalNetwork = probs => {
   }, []);
 
   const FetachReferalNetwork = userToken => {
+    setLoading(true);
     let requestOptions = {
       method: 'GET',
       headers: {
@@ -180,7 +180,8 @@ const ReferalNetwork = probs => {
       .then(res => res.json())
       .then(resJson => {
         setData(resJson);
-        console.log('referralnetwork data', JSON.stringify(resJson));
+        setLoading(false);
+        //console.log('referralnetwork data', JSON.stringify(resJson));
       })
       .catch(e => console.log(e));
   };
@@ -318,61 +319,20 @@ const ReferalNetwork = probs => {
             ))}
           </ScrollView>
         </View>
-
-        {/* <ScrollView>
-                        {data.map((value, index) => (
-                           
-                            <TouchableOpacity key={index}
-
-                            //onPress={() => { probs.navigation.navigate('StoreListScreen', { Catvalue: value.value }) }}
-                            >
-                                  {value.hasOwnProperty('children')? 
-                                    <View>
-                                    <List.Section title="Accordions"> 
-                                    <List.Accordion
-                                        title={value.name}
-                                       >
-                                        <List.Item title="First item" />
-                                        <List.Item title="Second item" />
-                                    </List.Accordion>
-                                    </List.Section>
-                                </View>
-                                  :
-                                  <View style={styles.ListCategoryrow}
-
-                                  >
-                                      <View style={styles.ListFirstCategoryIcon}>
-                                          <Text style={{ textAlign: 'left' }}>{value.name}</Text>
-                                          <Text style={{color:"#808080" }} >{value.email}/{value.mobile}</Text> 
-                                      </View>
-                                      <View style={{ flex: 0.3, alignSelf: 'center' }}>
-                                          {IsPremiumUser(value.isPremiumUser)}
-  
-                                      </View>
-                                      <View style={{ flex: 0.4, alignSelf: 'center',marginEnd:15}}>
-                                          {TillDate(value.membership)}
-  
-  
-                                      </View>
-                                  </View>
-                             
-                             }
-                          
-
-
-
-                                
-                            </TouchableOpacity>
-                        ))}
-
-
-                    </ScrollView> */}
       </View>
     </SafeAreaView>
   ) : (
     <View style={globalstyle.ActivityContainer}>
-      {ActivityIndicatorShow()}
-      <Text style={globalstyle.ActivityIndicator}>Loading please wait....</Text>
+      {loading ? (
+        <View>
+          {ActivityIndicatorShow()}
+          <Text style={globalstyle.ActivityIndicator}>
+            Loading please wait....
+          </Text>
+        </View>
+      ) : (
+        <Text style={globalstyle.ActivityIndicator}>No Data Found</Text>
+      )}
     </View>
   );
 };
