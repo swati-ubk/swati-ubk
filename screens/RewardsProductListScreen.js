@@ -117,32 +117,17 @@ export default class RewardsProductListScreen extends React.Component {
     )
       .then(res => res.json())
       .then(resJson => {
-        console.log('----------888--', resJson.length);
+        // console.log('----------888--', resJson.length);
         if (resJson.length > 0) {
           resJson.forEach(element => {
-            //   console.log("element...",element);
             this.setState({data: [...this.state.data, element]});
-
-            // this.renderItemComponent(element);
           });
-
-          //console.log('DataTest...',JSON.stringify(this.state.DataTest));
-
-          //this.setState({ data: resJson });
-          // this.setState({
-          //   data: resJson
-          // })
-          //  this.setState({ data: resJson});
-
           this.setState({
             refreshing: false,
             nodata: true,
             offset: this.state.offset + 1,
           });
         } else {
-          console.log('----------99999--', resJson.length);
-          // this.setState({category:this.props.route.params.Catvalue})
-
           this.setState({
             loadmore: false,
             loading: false,
@@ -155,30 +140,30 @@ export default class RewardsProductListScreen extends React.Component {
   };
 
   /**************************Start Here Search Product*******************************/
-  SearchProduct = seatchText => {
-    console.log('seatchText........', seatchText.length);
-    this.setState({refreshing: true});
-    if (seatchText.length > 0) {
-      console.log('StoreID............', this.state.StoreID);
-      WebService.GetDataJSon(
-        `business-details/${this.state.StoreID}/products?searchText=${seatchText}&limit=10&skip=0`,
-      ).then(response => {
-        if (response.length > 0) {
-          console.log(JSON.stringify(response));
-          this.setState({data: response, refreshing: false});
-        } else {
-          this.setState({
-            data: [],
-            refreshing: false,
-            noserachItem: false,
-            loading: false,
-          });
-        }
-      });
-    } else {
-      this.getproductlist(this.state.StoreID, this.state.CatId);
-    }
-  };
+  // SearchProduct = seatchText => {
+  //   console.log('seatchText........', seatchText.length);
+  //   this.setState({refreshing: true});
+  //   if (seatchText.length > 0) {
+  //     console.log('StoreID............', this.state.StoreID);
+  //     WebService.GetDataJSon(
+  //       `business-details/${this.state.StoreID}/products?searchText=${seatchText}&limit=10&skip=0`,
+  //     ).then(response => {
+  //       if (response.length > 0) {
+  //         console.log(JSON.stringify(response));
+  //         this.setState({data: response, refreshing: false});
+  //       } else {
+  //         this.setState({
+  //           data: [],
+  //           refreshing: false,
+  //           noserachItem: false,
+  //           loading: false,
+  //         });
+  //       }
+  //     });
+  //   } else {
+  //     this.getproductlist(this.state.StoreID, this.state.CatId);
+  //   }
+  // };
   /**************************End  Here Search Product*******************************/
 
   endreachedfun() {
@@ -428,8 +413,8 @@ export default class RewardsProductListScreen extends React.Component {
         </SafeAreaView>
       );
     } else {
-      console.log('===555999====', '' + this.state.data);
-      console.log('===555999====', '' + this.state.loading);
+      //  console.log('===555999====', '' + this.state.data);
+      //console.log('===555999====', '' + this.state.loading);
 
       return (
         <View style={globalstyle.ActivityContainer}>
