@@ -21,6 +21,28 @@ export default Categories = data => {
         console.log('categoryData...', JSON.stringify(responseJson));
         // console.log('length='+responseJson.length)
         if (responseJson.length > 0) {
+
+          WebService.myProductArray=[];
+
+         
+          for (var i = 0; i < responseJson.length; i++) {
+
+            let object2 = {};
+            //responseJson.map(item => {
+              (object2['id'] = responseJson[i].value),
+              (object2['name'] = responseJson[i].name),
+              //object2['id']=responseJson[i].value;
+             // object2['name']=responseJson[i].name;
+             // object2[`${responseJson[i].value}`] = responseJson[i].name
+              //object2[`${responseJson[i].value}`] = responseJson[i].name
+           // });
+            console.log('====99===>', object2);
+
+            WebService.myProductArray.push(object2)
+         //   var obj={`responseJson[i].name`:responseJson[i].name};
+              //console.log("===44==",obj);
+          }
+
           var FirstCategory = [];
           for (var i = 0; i < 4; i++) {
             FirstCategory.push(responseJson[i]);
@@ -51,6 +73,7 @@ export default Categories = data => {
             onPress={() => {
               data.data.props.navigation.navigate('StoreListScreen', {
                 Catvalue: value.value,
+                catNamee: value.name,
                 location: data.data.location,
                 formatted_address: data.data.formatted_address,
               });
@@ -76,6 +99,7 @@ export default Categories = data => {
             onPress={() =>
               data.data.props.navigation.navigate('StoreListScreen', {
                 Catvalue: value.value,
+                catNamee: value.name,
                 location: data.data.location,
               })
             }>

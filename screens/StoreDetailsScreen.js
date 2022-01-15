@@ -24,10 +24,13 @@ export default class StoreDetailsScreen extends React.Component {
   constructor(props) {
 
     console.log("StoreId...", props.route.params.StoreId);
+   // console.log("StoreId334...", props.route.params.Storename);
+    
     super(props);
     this.state = {
       data: [],
       StoreID: this.props.route.params.StoreId,
+     // StoreName:this.props.route.params.Storename,
       loading: false,
       WindowWIDTH: Dimensions.get('window').width,
       WindowHeight: Dimensions.get('window').height,
@@ -39,6 +42,14 @@ export default class StoreDetailsScreen extends React.Component {
 
 
   async componentDidMount() {
+
+
+    //const index = WebService.myProductArray.map(function(x) {return x.id; }).indexOf(this.state.StoreID);
+    //console.log("=========33========",WebService.myProductArray[index].name);
+   // console.log("-----------44444------------",);
+
+
+
     this.setState({ loading: true });
     this.setState({ data: [] })
     setTimeout(() => {
@@ -55,6 +66,7 @@ export default class StoreDetailsScreen extends React.Component {
       this.setState({ loading: true });
       this.setState({ data: [] })
       this.setState({ StoreID: this.props.route.params.StoreId })
+     // this.setState({ StoreName: this.props.route.params.Storename })
       setTimeout(() => {
         this.fetchCats();
       }, 1000);
@@ -72,7 +84,7 @@ export default class StoreDetailsScreen extends React.Component {
     WebService.GetData('business-details/' + this.props.route.params.StoreId)
       .then((response) => response.json())
       .then((responseJson) => {
-        // console.log(responseJson);
+         console.log("eeeee......",responseJson);
         // console.log('length='+responseJson.length)
         if (responseJson.length > 0) {
           console.log('acceptsCOD..', JSON.stringify(responseJson[0].acceptsCOD));
@@ -144,6 +156,21 @@ export default class StoreDetailsScreen extends React.Component {
     return true;
   }
 
+  getStorename(idd)
+       {
+
+        console.log("------99992-",WebService.myProductArray)
+      
+      
+        const indexx= WebService.myProductArray.findIndex(obj => obj.id === idd)
+      console.log("--====55555==",indexx)
+      
+    //const index = WebService.myProductArray.map(function(x) {return x.id; }).indexOf('grocery');
+    console.log("=========33========",WebService.myProductArray[indexx].name);
+   // console.log("-----------44444------------",);
+
+    return WebService.myProductArray[indexx].name;
+    }
 
   render() {
     // console.log(this.props.route.params.Catvalue);
@@ -215,7 +242,7 @@ export default class StoreDetailsScreen extends React.Component {
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ width: '70%' }}>
                   <Text style={styles.ShopTitle}>{this.state.data[0].name}</Text>
-                  <Text style={styles.Shopsulg}>{this.state.data[0].slug}</Text>
+                  <Text style={styles.Shopsulg}>{this.getStorename(this.state.data[0].category)}</Text>
                   <Text style={styles.ShopAddress}>
                     {this.state.data[0].address}
 

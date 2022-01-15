@@ -27,6 +27,8 @@ const StoreListScreen = props => {
 
   useEffect(() => {
     console.log('props...', JSON.stringify(props));
+    console.log('props.22..', props.route.params.Catvalue);
+    console.log('props.23..', props.route.params.catNamee);
     async function fetchMyAPI() {
       try {
         WebService.GetData(
@@ -36,7 +38,7 @@ const StoreListScreen = props => {
         )
           .then(response => response.json())
           .then(responseJson => {
-            console.log(responseJson);
+            console.log("----------",responseJson);
             console.log('length=' + responseJson.length);
             if (responseJson.length > 0) {
               //  setOffset(offset + 1);
@@ -140,8 +142,8 @@ const StoreListScreen = props => {
 
   const ItemView = ({item}) => {
     //console.log(globalcolor.ImageBaseUrl+item.photos[0].path);
-    let status = 'Close';
-    item.isOpen ? (status = 'Open') : 'Close';
+    let status = 'Closed';
+    item.isOpen ? (status = 'Open') : 'Closed';
     return (
       <TouchableOpacity
         style={styles.ProductListrow}
@@ -156,9 +158,9 @@ const StoreListScreen = props => {
         </View>
         <View style={styles.ListBody}>
           <Text style={globalstyle.ListPrimaryText}>{item.name}</Text>
-          <Text style={styles.SlugListText}>{item.slug}</Text>
+          <Text style={styles.SlugListText}>{props.route.params.catNamee}</Text>
           <Text style={styles.Productdesc}>
-            {item.description.substring(0, 65)}
+            {item.address}
           </Text>
           <Text
             style={
@@ -301,6 +303,7 @@ const styles = StyleSheet.create({
     color: globalcolor.SeconderFontColor,
     marginTop: 2,
     fontWeight: 'bold',
+    textTransform: 'capitalize'
   },
   Productdesc: {
     fontFamily: globalcolor.Font,

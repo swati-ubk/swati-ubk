@@ -138,7 +138,7 @@ export default class StoreList extends React.Component {
   /**************************End  Here Search Product*******************************/
   renderItemComponent = (data) =>
     <TouchableOpacity style={styles.ProductListrow}
-      onPress={() => { this.props.navigation.navigate('StoreDetailsScreen', { StoreId: data.item.id }) }}
+      onPress={() => { this.props.navigation.navigate('StoreDetailsScreen', { StoreId: data.item.id ,Storename:"ubk4"}) }}
     >
       <View style={styles.ProductlistFirstItem}>
         <Image

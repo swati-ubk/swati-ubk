@@ -11,6 +11,7 @@ const AllCategories = (probs) => {
   // console.log(probs.navigation.navigate);
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([]);
+  //console.log("dddddddd-----",data);
   useEffect(() => getCategories(), []);
 
   const getCategories = () => {
@@ -54,7 +55,7 @@ const AllCategories = (probs) => {
           {data.map((value, index) => (
             <TouchableOpacity key={index}
 
-              onPress={() => { probs.navigation.navigate('StoreListScreen', { Catvalue: value.value }) }}
+              onPress={() => { probs.navigation.navigate('StoreListScreen', { Catvalue: value.value, catNamee: value.name}) }}
             >
               <View style={globalstyle.ListCategoryrow}
 

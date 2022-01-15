@@ -1245,7 +1245,7 @@ export default class ProductListScreen extends React.Component {
             />
           </View>
           <View>
-            <ScrollView horizontal={true}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               {this.state.cartegorydata.map((value, index) => (
                 <TouchableOpacity
                   style={styles.ProductListrow}

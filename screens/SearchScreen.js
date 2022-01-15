@@ -98,7 +98,7 @@ const SearchScreen = props => {
   };
 
   const ItemView = ({item}) => {
-    //console.log(globalcolor.ImageBaseUrl+item.photos[0].path);
+    console.log("============7777======",item);
     let status = 'Close';
     item.isOpen ? (status = 'Open') : 'Close';
     return (
@@ -117,7 +117,7 @@ const SearchScreen = props => {
           <Text style={globalstyle.ListPrimaryText}>{item.name}</Text>
           <Text style={styles.SlugListText}>{item.slug}</Text>
           <Text style={styles.Productdesc}>
-            {item.description.substring(0, 65)}
+            {item.address}
           </Text>
           <Text
             style={
