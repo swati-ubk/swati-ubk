@@ -153,10 +153,11 @@ const PayoutScreen = probs => {
   );
 
   const renderItemComponent = data => {
-    // console.log('payout Items..', data);
+    console.log('payout Items..', JSON.stringify(data));
 
     return (
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => probs.navigation.navigate('PayoutDetailsScreen')}>
         <View style={styles.ListCategoryrow}>
           <View style={styles.ListFirstCategoryIcon}>
             <Text style={{textAlign: 'left'}}>{data.item.requestedAmount}</Text>
