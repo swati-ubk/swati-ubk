@@ -48,10 +48,17 @@ export default Categories = data => {
             FirstCategory.push(responseJson[i]);
           }
           setDataSource1([...dataSource1, ...FirstCategory]);
+         
           var SecondCategory = [];
           for (var i = 4; i < 7; i++) {
+            console.log("dfsvefsdfedfs------",responseJson[i])
             SecondCategory.push(responseJson[i]);
           }
+          var object3={} 
+         
+          object3['name'] = 'More';
+        
+          SecondCategory.push(object3)
           setDataSource2([...dataSource2, ...SecondCategory]);
         } else {
           setIsListEnd(true);
@@ -79,10 +86,10 @@ export default Categories = data => {
               });
             }}>
             <View style={styles.categoryIcon}>
-              <Image
-                source={{uri: ConfigFile.ImageBaseUrl + value.photos[0].path}} //Change your icon image here
-                style={styles.ImageStyle}
-              />
+               <Image 
+                 source={{uri: ConfigFile.ImageBaseUrl + value.photos[0].path}} 
+                 style={styles.ImageStyle}
+               />
             </View>
             {/* <Text style={styles.categoryBtnTxt}>{globalcolor.ImageBaseUrl+value.photos[0].path}</Text>  */}
             <Text style={styles.categoryBtnTxt}>
@@ -93,40 +100,61 @@ export default Categories = data => {
       </View>
       <View style={styles.categoryContainer}>
         {dataSource2.map((value, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.categoryBtn}
-            onPress={() =>
-              data.data.props.navigation.navigate('StoreListScreen', {
-                Catvalue: value.value,
-                catNamee: value.name,
-                location: data.data.location,
-              })
-            }>
-            <View style={styles.categoryIcon}>
-              <Image
-                source={{uri: ConfigFile.ImageBaseUrl + value.photos[0].path}} //Change your icon image here
-                style={styles.ImageStyle}
-              />
-            </View>
-            <Text style={styles.categoryBtnTxt}>
-              {value.name.substring(0, 10)}
-            </Text>
-          </TouchableOpacity>
-        ))}
-        <TouchableOpacity
-          style={styles.categoryBtn}
-          onPress={() => {
-            data.data.props.navigation.navigate('AllCategories');
-          }}>
-          <View style={styles.categoryIcon}>
-            <Image
-              source={require('../../assets/img/more-3.png')} //Change your icon image here
-              style={styles.ImageStyle}
-            />
-          </View>
-          <Text style={styles.categoryBtnTxt}>More</Text>
-        </TouchableOpacity>
+
+
+                value.name ==='More' ?
+                 <TouchableOpacity
+                  style={styles.categoryBtn}
+                  onPress={() => {
+                  data.data.props.navigation.navigate('AllCategories');
+                     }}>
+                   <View style={styles.categoryIcon}>
+                   <Image
+                    source={require('../../assets/img/more-3.png')} 
+                    style={styles.ImageStyle}
+                    />
+              </View>
+              <Text style={styles.categoryBtnTxt}>More</Text>
+             </TouchableOpacity> 
+              : 
+               <TouchableOpacity
+                  key={index}
+                  style={styles.categoryBtn}
+                  onPress={() =>
+                 data.data.props.navigation.navigate('StoreListScreen', {
+                  Catvalue: value.value,
+                 catNamee: value.name,
+                   location: data.data.location,
+                })
+             }>
+     <View style={styles.categoryIcon}>
+    
+       <Image
+         source={{uri: ConfigFile.ImageBaseUrl + value.photos[0].path}} 
+         style={styles.ImageStyle}
+       /> 
+     </View>
+     <Text style={styles.categoryBtnTxt}>
+       {value.name.substring(0, 10)}
+    </Text>
+  </TouchableOpacity>
+                  
+       
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+         ) )}
       </View>
     </View>
   );

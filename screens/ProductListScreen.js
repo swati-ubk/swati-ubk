@@ -1269,7 +1269,7 @@ export default class ProductListScreen extends React.Component {
                       style={{
                         textAlign: 'center',
                         fontFamily: globalstyle.Font,
-                        fontSize: 12,
+                        fontSize: 11,
                       }}>
                       {value.name.substring(0, 10)}
                     </Text>

@@ -47,6 +47,17 @@ const SearchScreen = props => {
     return () => backHandler.remove();
   }, []);
 
+
+  
+  
+  
+   const getStorename= (idd) =>
+  {
+   const indexx= WebService.myProductArray.findIndex(obj => obj.id === idd)
+   return WebService.myProductArray[indexx].name;
+   }
+  
+  
   /**************************Start Here Search Product*******************************/
   const SearchStore = seatchText => {
     setLoading(true);
@@ -115,7 +126,7 @@ const SearchScreen = props => {
         </View>
         <View style={styles.ListBody}>
           <Text style={globalstyle.ListPrimaryText}>{item.name}</Text>
-          <Text style={styles.SlugListText}>{item.slug}</Text>
+          <Text style={styles.SlugListText}>{getStorename(item.category)}</Text>
           <Text style={styles.Productdesc}>
             {item.address}
           </Text>

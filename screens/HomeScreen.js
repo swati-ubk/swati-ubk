@@ -255,8 +255,8 @@ class HomeScreen extends Component {
         formatted_address: this.state.addresss,
       },
     };
-
-    console.log("asssssss-----",this.state.PopularCat1);
+   
+    console.log("asssssss-----",this.state.PopularCat2.length);
     return (
       <SafeAreaView style={[styles.container, {marginTop: 50}]}>
         {/* ,{ callHome: this.proFum.bind(this)} */}
@@ -303,6 +303,7 @@ class HomeScreen extends Component {
                 <Categories data={CategoryData} />
               </View>
               <View style={styles.middle}>
+              { this.state.PopularCat1.length !== 0 ?
                 <View style={styles.categoryTitleContainer}>
                   <View style={styles.categoryName}>
                     <Text style={styles.categorytitle}>
@@ -322,6 +323,7 @@ class HomeScreen extends Component {
                     </Text> */}
                   </View>
                 </View>
+                 : null }
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                   {this.state.PopularCat1.map((value, index) => (
                     
@@ -374,6 +376,7 @@ class HomeScreen extends Component {
                 </ScrollView>
               </View>
               <View style={styles.bottom}>
+              { this.state.PopularCat2.length !== 0 ?
                 <View style={styles.categoryTitleContainer}>
                   <View style={styles.categoryName}>
                     <Text style={styles.categorytitle}>
@@ -393,6 +396,7 @@ class HomeScreen extends Component {
                     </Text> */}
                   </View>
                 </View>
+                :null }
                 <ScrollView horizontal={true}>
                   {this.state.PopularCat2.map((value, index) => (
                     <TouchableOpacity
