@@ -476,7 +476,7 @@ const AddressScreen = probs => {
           <Text style={globalstyle.LableText}>Area,Colony,Street,Village</Text>
           <View style={globalstyle.ListrowAccount}>
             <TextInput
-              placeholder="Kolkata"
+              placeholder=""
               placeholderTextColor="#666666"
               // secureTextEntry={data.secureTextEntry ? true : false}
               style={[

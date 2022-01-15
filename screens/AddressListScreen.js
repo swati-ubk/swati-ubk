@@ -37,6 +37,7 @@ export default function TabViewExample({navigation}) {
   useEffect(() => {
     async function fetchMyAPI() {
       try {
+        setLoading(true);
         let userToken = await AsyncStorage.getItem('userToken');
         console.log('userToken.....', userToken);
         SetToken(userToken);
@@ -52,7 +53,8 @@ export default function TabViewExample({navigation}) {
           .then(res => res.json())
           .then(resJson => {
             // return resJson;
-            console.log('My Adrees ...............', resJson.user.address);
+            // console.log('My Adrees ...............', resJson.user.address);
+            setLoading(false);
             setDataSource(resJson.user.address);
           })
           .catch(e => console.log(e));
@@ -169,7 +171,23 @@ export default function TabViewExample({navigation}) {
       />
     );
   };
-
+  const ActivityIndicatorShow = () => {
+    return (
+      <View>
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            color={globalcolor.PrimaryColor}
+            style={{
+              marginTop: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          />
+        ) : null}
+      </View>
+    );
+  };
   //   const renderScene = SceneMap({
   //     first: FirstRoute,
   //     // second: SecondRoute,
@@ -205,16 +223,31 @@ export default function TabViewExample({navigation}) {
         </View>
       </View>
       {/*------------BACK BUTTON END------------------*/}
+      {dataSource.length > 0 ? (
+        <FlatList
+          data={dataSource}
+          keyExtractor={(item, index) => index.toString()}
+          ItemSeparatorComponent={ItemSeparatorView}
+          renderItem={ItemView}
+          //  ListFooterComponent={renderFooter}
+          //  onEndReached={getData}
+          //  onEndReachedThreshold={0.5}
+        />
+      ) : (
+        <View style={globalstyle.ActivityContainer}>
+          {loading ? (
+            <View>
+              {ActivityIndicatorShow()}
+              <Text style={globalstyle.ActivityIndicator}>
+                Loading please wait....
+              </Text>
+            </View>
+          ) : (
+            <Text style={globalstyle.ActivityIndicator}>No Data Found</Text>
+          )}
+        </View>
+      )}
 
-      <FlatList
-        data={dataSource}
-        keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={ItemSeparatorView}
-        renderItem={ItemView}
-        //  ListFooterComponent={renderFooter}
-        //  onEndReached={getData}
-        //  onEndReachedThreshold={0.5}
-      />
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => navigation.navigate('AddressScreen')}

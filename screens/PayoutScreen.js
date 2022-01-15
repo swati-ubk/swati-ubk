@@ -41,6 +41,7 @@ const PayoutScreen = probs => {
   }, []);
 
   const FetachReferalNetwork = userToken => {
+    setLoading(true);
     let requestOptions = {
       method: 'GET',
       headers: {
@@ -48,14 +49,7 @@ const PayoutScreen = probs => {
         Authorization: 'Bearer ' + userToken,
       },
     };
-    console.log('requestOptions..', requestOptions);
-    WebService.PostData('customer/settlement?limit=60&skip=0', requestOptions)
-      .then(res => res.json())
-      .then(resJson => {
-        setData(resJson);
-        //console.log('Payout data..', JSON.stringify(resJson));
-      })
-      .catch(e => console.log(e));
+
     WebService.PostData('me', requestOptions)
       .then(res => res.json())
       .then(resJson => {
@@ -63,9 +57,18 @@ const PayoutScreen = probs => {
         //console.log('Payout data..', JSON.stringify(resJson));
       })
       .catch(e => console.log(e));
+
+    // console.log('requestOptions..', requestOptions);
+    WebService.PostData('customer/settlement?limit=60&skip=0', requestOptions)
+      .then(res => res.json())
+      .then(resJson => {
+        setData(resJson);
+        setLoading(false);
+      })
+      .catch(e => console.log(e));
   };
   const handleBackButtonClick = () => {
-    console.log('Back buttton............', probs.navigation);
+    //   console.log('Back buttton............', probs.navigation);
     probs.navigation.goBack();
     return true;
   };
@@ -265,8 +268,16 @@ const PayoutScreen = probs => {
     </SafeAreaView>
   ) : (
     <View style={globalstyle.ActivityContainer}>
-      {ActivityIndicatorShow()}
-      <Text style={globalstyle.ActivityIndicator}>Loading please wait....</Text>
+      {loading ? (
+        <View>
+          {ActivityIndicatorShow()}
+          <Text style={globalstyle.ActivityIndicator}>
+            Loading please wait....
+          </Text>
+        </View>
+      ) : (
+        <Text style={globalstyle.ActivityIndicator}>No Data Found</Text>
+      )}
     </View>
   );
 };

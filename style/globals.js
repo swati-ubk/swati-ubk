@@ -272,6 +272,8 @@ export const globalstyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#000',
     borderRadius: 10,
+    marginLeft: 10,
+    marginRight: 10,
   },
   Coverimage: {
     flex: 1,
