@@ -113,6 +113,7 @@ export default class StoreDetailsScreen extends React.Component {
   }
 
   async productListPage(acceptsCOD, requireSlot) {
+    console.log("-------------1-----",acceptsCOD,requireSlot)
 
     await AsyncStorage.setItem('SelectedStoreID', this.props.route.params.StoreId);
     this.props.navigation.navigate('ProductListScreen', { StoreId: this.props.route.params.StoreId, acceptsCOD: acceptsCOD, requireSlot: requireSlot })

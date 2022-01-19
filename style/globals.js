@@ -157,8 +157,8 @@ export const globalstyle = StyleSheet.create({
   Ratingbutton: {
     fontFamily: globalcolor.Font,
     backgroundColor: globalcolor.PrimaryColor,
-    width: 40,
-    padding: 5,
+    width: 30,
+    padding: 2,
     borderRadius: 10,
     color: globalcolor.Textcolor,
     justifyContent: 'center',

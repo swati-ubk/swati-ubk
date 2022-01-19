@@ -3,6 +3,7 @@ import {globalstyle} from '../style/globals.js';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {globalcolor} from '../style/globalcolor';
 import {ConfigFile} from '../service/ConfigFile';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {WebService} from '../service/WebService.js';
 import WebService from '../service/WebService';
 import {
@@ -18,6 +19,7 @@ import {
 } from 'react-native';
 import {Button} from 'react-native-paper';
 import {Item} from 'react-native-paper/lib/typescript/components/List/List';
+import { log } from 'react-native-reanimated';
 
 const StoreListScreen = props => {
   //console.log(props.route.params.Catvalue);
@@ -123,6 +125,9 @@ const StoreListScreen = props => {
     return true;
   };
 
+
+  
+
   /**************************End  Here Search Product*******************************/
 
   const renderFooter = () => {
@@ -140,14 +145,66 @@ const StoreListScreen = props => {
     );
   };
 
+  const productListPage =async (storeId,acceptsCOD,requireSlot) => {
+  //const productListPage(acceptsCOD, requireSlot) {
+    console.log("-------------0001-----",acceptsCOD,requireSlot)
+
+    await AsyncStorage.setItem('SelectedStoreID', storeId);
+    props.navigation.navigate('ProductListScreen', { StoreId: storeId, acceptsCOD: acceptsCOD, requireSlot: requireSlot })
+  }
+
   const ItemView = ({item}) => {
-    //console.log(globalcolor.ImageBaseUrl+item.photos[0].path);
+    console.log("================"+globalcolor.ImageBaseUrl+item.photos[0].path);
+    console.log("sdsadasdasd=1===========",""+item.isBoomPartner)
+    console.log("sdsadasdasd=2===========",""+item.id)
+    console.log("sdsadasdasd=3===========",""+item.acceptsCOD)
+    console.log("sdsadasdasd=4===========",""+item.requireSlot)
+    //item.id
     let status = 'Closed';
     item.isOpen ? (status = 'Open') : 'Closed';
+
+   
     return (
+
+       item.isBoomPartner === true ?
       <TouchableOpacity
         style={styles.ProductListrow}
+        
+        onPress={() => { productListPage(item.id,item.acceptsCOD, item.requireSlot) }
+        
+        }>
+        <View style={styles.ProductlistFirstItem}>
+          <Image
+            source={{uri: ConfigFile.ImageBaseUrl + item.photos[0].path}} //Change your icon image here
+            style={[styles.ProductImage]}
+          />
+        </View>
+        <View style={styles.ListBody}>
+          <Text style={globalstyle.ListPrimaryText}>{item.name}</Text>
+      <Text style={styles.SlugListText}>{props.route.params.catNamee}{item.isBoomPartner}</Text>
+          <Text style={styles.Productdesc}>
+            {item.address}
+          </Text>
+          <Text
+            style={
+              item.isOpen
+                ? {color: globalcolor.Successcolor}
+                : {color: globalcolor.Errorcolor}
+            }>
+            {' '}
+            {status}{' '}
+          </Text>
+        </View>
+        <View style={styles.ListSecondIcon}>
+          <Text style={globalstyle.Ratingbutton}>{item.rating}</Text>
+        </View>
+      </TouchableOpacity>
+      :
+      <TouchableOpacity
+        style={styles.ProductListrow}
+        
         onPress={() => {
+          
           props.navigation.navigate('StoreDetailsScreen', {StoreId: item.id});
         }}>
         <View style={styles.ProductlistFirstItem}>
@@ -158,7 +215,7 @@ const StoreListScreen = props => {
         </View>
         <View style={styles.ListBody}>
           <Text style={globalstyle.ListPrimaryText}>{item.name}</Text>
-          <Text style={styles.SlugListText}>{props.route.params.catNamee}</Text>
+      <Text style={styles.SlugListText}>{props.route.params.catNamee}{item.isBoomPartner}</Text>
           <Text style={styles.Productdesc}>
             {item.address}
           </Text>
@@ -263,22 +320,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   ProductlistFirstItem: {
-    width: '30%',
+    flex:0.4,
   },
   ListBody: {
     marginLeft: 10,
     // margin:10,
-    width: '70%',
+    marginLeft:30,
+    flex:1,
     padding: 10,
   },
   ListSecondIcon: {
-    width: '20%',
+    marginLeft:30,
+    flex:0.2,
   },
   ProductListrow: {
+    flex:1,
     marginLeft: 10,
-    marginRight: 40,
+    marginRight: 10,
     flexDirection: 'row',
     //marginTop:20,
+    //backgroundColor:'#000',
     marginVertical: 10,
     shadowColor: '#000',
     shadowOffset: {

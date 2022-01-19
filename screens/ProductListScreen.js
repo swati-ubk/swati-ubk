@@ -144,7 +144,7 @@ export default class ProductListScreen extends React.Component {
               '0000=============55==============00000',
               JSON.stringify(ddddd),
             );
-            // this.importData()
+             this.importData()
           } else {
             console.log('=========100======');
             var sellingPrice = parseInt(product.variants[0].sellingPrice);
@@ -157,7 +157,7 @@ export default class ProductListScreen extends React.Component {
               price: sellingPrice,
             };
             await AsyncStorage.setItem(product.id, JSON.stringify(data_obj));
-            // this.importData()
+             this.importData()
           }
 
           ////console.log("=======2========");

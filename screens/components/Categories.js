@@ -78,7 +78,7 @@ export default Categories = data => {
             key={index}
             style={styles.categoryBtn}
             onPress={() => {
-              data.data.props.navigation.navigate('StoreListScreen', {
+                data.data.props.navigation.navigate('StoreListScreen', {
                 Catvalue: value.value,
                 catNamee: value.name,
                 location: data.data.location,
@@ -139,21 +139,6 @@ export default Categories = data => {
     </Text>
   </TouchableOpacity>
                   
-       
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
          ) )}
       </View>
     </View>

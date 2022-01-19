@@ -43,7 +43,7 @@ export default class AddToCart extends Component {
     this.importData();
   }
   componentDidUpdate(prevProps, prevState) {
-    //
+    
     let a = prevState.checkTotalPrice;
     let b = this.props.route.params.totalPrice;
     console.log('a========', a);
@@ -58,6 +58,57 @@ export default class AddToCart extends Component {
       this.importData();
     }
   }
+
+  importData2= async () => {
+    try {
+     // this.state.localcart = [];
+      const keys = await AsyncStorage.getAllKeys();
+
+      const itemsArray = await AsyncStorage.multiGet(keys);
+
+      let object2 = {};
+      itemsArray.map(item => {
+        object2[`${item[0]}`] = item[1];
+      });
+      console.log('=======>', object2);
+
+      itemsArray.map(item => {
+        console.log(item[1], '-------222----------', `${item[0]}`);
+        if (
+          `${item[0]}` == 'user' ||
+          `${item[0]}` == 'userToken' ||
+          `${item[0]}` == 'SelectedStoreID' ||
+          `${item[0]}` == 'RewordCart' ||
+          `${item[0]}` == 'Coordinate' ||
+          `${item[0]}` == 'address'
+        ) {
+
+        }
+        else{
+          if (`${item[0]}` == 'count') {
+            // console.log("a.....",item[1])
+            this.setState({
+              count: item[1],
+            });
+          } else if (`${item[0]}` == 'totalPrice') {
+            this.setState({
+              totalPrice: item[1],
+            });
+          } else {
+
+          }
+        }
+
+
+      });
+
+    
+      this.fetchData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   importData = async () => {
     this.setState({
       CartData: [],
@@ -152,22 +203,8 @@ export default class AddToCart extends Component {
       WebService.GetData('business-details/' + SelectedStoreID)
         .then(response => response.json())
         .then(responseJson => {
-          // console.log(responseJson);
-          // console.log('length='+responseJson.length)
           if (responseJson.length > 0) {
-            // console.log('FecthStoreId..', SelectedStoreID);
-            // console.log(
-            //   'acceptsCOD..',
-            //   JSON.stringify(responseJson[0].acceptsCOD),
-            // );
-            // console.log(
-            //   'acceptsCOD..',
-            //   JSON.stringify(responseJson[0].acceptsCOD),
-            // );
-            // console.log(
-            //   'requireSlot..',
-            //   JSON.stringify(responseJson[0].requireSlot),
-            // );
+        
             this.setState({
               acceptsCOD: responseJson[0].acceptsCOD,
               requireSlot: responseJson[0].requireSlot,
@@ -471,7 +508,7 @@ export default class AddToCart extends Component {
   // }
 
   render() {
-    if (this.state.EmptyCart) {
+   if (this.state.EmptyCart) {
       return (
         <SafeAreaView style={styles.container}>
           <View style={{marginTop: 80, flex: 1}}>
@@ -492,7 +529,7 @@ export default class AddToCart extends Component {
           </View>
         </SafeAreaView>
       );
-    } else {
+   } else {
       let totalcost = this.state.totalPrice;
 
       let data1 = {
