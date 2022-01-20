@@ -43,6 +43,7 @@ export default class AddToCart extends Component {
     this.importData();
   }
   componentDidUpdate(prevProps, prevState) {
+    
     let a = prevState.checkTotalPrice;
     let b = this.props.route.params.totalPrice;
     console.log('a========', a);
@@ -58,102 +59,7 @@ export default class AddToCart extends Component {
     }
   }
 
-<<<<<<< HEAD
-  importData2 = async () => {
-    try {
-      // this.state.localcart = [];
-      const keys = await AsyncStorage.getAllKeys();
-=======
-  importData2= async () => {
-     try {
-        this.state.localcart = [];
-       const keys = await AsyncStorage.getAllKeys();
->>>>>>> 231ab78da370610d0b64d102063ad86a64433d13
-
-       const itemsArray = await AsyncStorage.multiGet(keys);
-
-       let object2 = {};
-      itemsArray.map(item => {
-        object2[`${item[0]}`] = item[1];
-      });
-      console.log('=======>', object2);
-
-      itemsArray.map(item => {
-        console.log(item[1], '-------222----------', `${item[0]}`);
-        if (
-          `${item[0]}` == 'user' ||
-          `${item[0]}` == 'userToken' ||
-          `${item[0]}` == 'SelectedStoreID' ||
-          `${item[0]}` == 'RewordCart' ||
-          `${item[0]}` == 'Coordinate' ||
-          `${item[0]}` == 'address'
-        ) {
-        } else {
-          if (`${item[0]}` == 'count') {
-            // console.log("a.....",item[1])
-            // this.setState({
-            //   count: item[1],
-            // });
-          } else if (`${item[0]}` == 'totalPrice') {
-            // this.setState({
-            //   totalPrice: item[1],
-            // });
-          } else {
-<<<<<<< HEAD
-          }
-        }
-      });
-
-      // this.fetchData();
-=======
-
-
-            const jsondata = JSON.parse(item[1]);
-            // console.log(jsondata)
-            let object = {};
-
-            if (jsondata.hasOwnProperty('count')) {
-              (object['productId'] = jsondata.id),
-              (object['variantId'] = jsondata.variants),
-              (object['quantity'] = jsondata.count);
-
-            console.log('asasasas----', object);
-            console.log(
-              'aaaaaa---2----',
-              this.state.localcart.hasOwnProperty(object),
-            );
-            this.setState({localcart: [...this.state.localcart, object]});
-
-          }
-          else{
-            for (const [key, value] of Object.entries(jsondata.variants)) {
-              // console.log(`${key}: ${value}`);
-              //console.log("======22222======")
-              object = {};
-              (object['productId'] = jsondata.id),
-                (object['variantId'] = `${key}`),
-                (object['quantity'] = `${value}`);
-              console.log('aaaaaa---1----', object);
-
-              this.setState({localcart: [...this.state.localcart, object]});
-            }
-
-          }
-        }
-         }
-
-       });
-
-
-    console.log('wwwww========..', this.state.localcart);
-    
-      this.fetchData();
->>>>>>> 231ab78da370610d0b64d102063ad86a64433d13
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  
   importData = async () => {
     this.setState({
       CartData: [],
@@ -248,9 +154,8 @@ export default class AddToCart extends Component {
       WebService.GetData('business-details/' + SelectedStoreID)
         .then(response => response.json())
         .then(responseJson => {
-
-          console.log("sdcdcc------",responseJson)
           if (responseJson.length > 0) {
+        
             this.setState({
               acceptsCOD: responseJson[0].acceptsCOD,
               requireSlot: responseJson[0].requireSlot,
@@ -291,7 +196,6 @@ export default class AddToCart extends Component {
           requestOptions,
         );
         const json = await response.json();
-        console.log("---------33333----",json)
         if (json.items.length > 0) {
           this.setState({
             data: json,
@@ -336,7 +240,7 @@ export default class AddToCart extends Component {
       };
       //  console.log('aaaaaaaaaaaaaaaa....', '' + JSON.stringify(data_obj));
       await AsyncStorage.setItem(data.item.productId, JSON.stringify(data_obj));
-      this.importData2();
+     // this.importData();
     } else {
       var veri_id = data.item.variant.id;
       var v_obj = userData.variants;
@@ -363,11 +267,12 @@ export default class AddToCart extends Component {
         // '=================999=============',
         JSON.stringify(data_obj),
       );
-      this.importData2();
+     // this.importData();
     }
   };
 
 
+  
   handleBackButtonClick = () => {
     // console.log('Back buttton............', props.navigation);
     this.props.navigation.goBack();
@@ -397,7 +302,7 @@ export default class AddToCart extends Component {
       //   console.log(totalPrice, cutprice);
       await AsyncStorage.removeItem(productId);
 
-      this.importData2();
+      this.importData();
     } else {
       var veri_id = data.item.variant.id;
 
@@ -425,7 +330,7 @@ export default class AddToCart extends Component {
 
         await AsyncStorage.removeItem(productId);
 
-        this.importData2();
+        this.importData();
       } else {
         //  console.log('1++ok');
         let data_obj;
@@ -457,7 +362,7 @@ export default class AddToCart extends Component {
   );
 
   product_cart = item => {
-    console.log('0000000000000000000', item);
+    //console.log('0000000000000000000', item);
     // //console.log(this.state.data)
     //  console.log(item.item.maxOrderQuantity);
 
@@ -466,7 +371,7 @@ export default class AddToCart extends Component {
     if (nameee == '') {
       nameee = item.item.productName;
     } else {
-      nameee = item.item.productName+" "+item.item.variant.name;
+      nameee = item.item.variant.name;
     }
 
     return (
@@ -479,9 +384,6 @@ export default class AddToCart extends Component {
               {' '}
               {item.item.variant.sellingPrice}{' '}
             </Text>
-
-            { item.item.variant.maximumPrice != item.item.variant.sellingPrice ?
-
             <Text
               style={{
                 fontWeight: 'bold',
@@ -490,7 +392,6 @@ export default class AddToCart extends Component {
               }}>
               ₹ {item.item.variant.maximumPrice}{' '}
             </Text>
-            :null}
           </Text>
         </View>
 
@@ -533,10 +434,12 @@ export default class AddToCart extends Component {
         </View>
       </View>
     );
-  }; 
+  };
+
+  
 
   render() {
-    if (this.state.EmptyCart) {
+   if (this.state.EmptyCart) {
       return (
         <SafeAreaView style={styles.container}>
           <View style={{marginTop: 80, flex: 1}}>
@@ -557,7 +460,7 @@ export default class AddToCart extends Component {
           </View>
         </SafeAreaView>
       );
-    } else {
+   } else {
       let totalcost = this.state.totalPrice;
 
       let data1 = {
@@ -683,8 +586,8 @@ const Footer = data => {
           }}
         />
         <View style={{width: '100%', flexDirection: 'row'}}>
-          <Text style={{width: '50%', textAlign: 'left'}}></Text>
-          <Text style={{width: '50%', textAlign: 'right'}}> </Text>
+          <Text style={{width: '50%', textAlign: 'left'}}>Total</Text>
+          <Text style={{width: '50%', textAlign: 'right'}}> ₹ {total}</Text>
         </View>
 
         <View>
@@ -700,7 +603,7 @@ const Footer = data => {
             {/* // onPress={() => checkOut(data.data)}> */}
 
             <View style={globalstyle.FooterTabButton}>
-              <Text style={globalstyle.FooterTabText}> Amount to Pay  ₹ {total} </Text>
+              <Text style={globalstyle.FooterTabText}> CHECK OUT</Text>
             </View>
           </TouchableOpacity>
         </View>
