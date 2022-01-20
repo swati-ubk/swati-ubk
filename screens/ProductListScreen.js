@@ -144,7 +144,7 @@ export default class ProductListScreen extends React.Component {
               '0000=============55==============00000',
               JSON.stringify(ddddd),
             );
-             this.importData()
+            this.importData();
           } else {
             console.log('=========100======');
             var sellingPrice = parseInt(product.variants[0].sellingPrice);
@@ -157,7 +157,7 @@ export default class ProductListScreen extends React.Component {
               price: sellingPrice,
             };
             await AsyncStorage.setItem(product.id, JSON.stringify(data_obj));
-             this.importData()
+            this.importData();
           }
 
           ////console.log("=======2========");
@@ -1031,37 +1031,43 @@ export default class ProductListScreen extends React.Component {
     }
 
     return (
-      <View style={styles.ProductListrow}>
-        <View style={styles.ProductlistFirstItem}>
-          <Image
-            source={{uri: imageUrl}} //Change your icon image here
-            style={[styles.ProductImage]}
-          />
-        </View>
-        <View style={styles.ListBody}>
-          <Text style={globalstyle.ProductText}>{data.item.name}</Text>
+      <Animated.View
+        style={{
+          //```  margin: 20,
+          opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
+        }}>
+        <View style={styles.ProductListrow}>
+          <View style={styles.ProductlistFirstItem}>
+            <Image
+              source={{uri: imageUrl}} //Change your icon image here
+              style={[styles.ProductImage]}
+            />
+          </View>
+          <View style={styles.ListBody}>
+            <Text style={globalstyle.ProductText}>{data.item.name}</Text>
 
-          {data.item.variants.map((value, index) =>
-            value.isDefault == true ? (
-              <Text style={globalstyle.ProductPrice} key={index}>
-                ₹
-                <Text style={{fontWeight: 'bold', color: '#000000'}}>
-                  {' '}
-                  {value.sellingPrice}
+            {data.item.variants.map((value, index) =>
+              value.isDefault == true ? (
+                <Text style={globalstyle.ProductPrice} key={index}>
+                  ₹
+                  <Text style={{fontWeight: 'bold', color: '#000000'}}>
+                    {' '}
+                    {value.sellingPrice}
+                  </Text>
                 </Text>
-              </Text>
-            ) : null,
-          )}
-          <Text style={styles.Productdesc}>
-            {data.item.description.substring(0, 65)}{' '}
-          </Text>
-          <View style={styles.ProductListrow}>
-            {this.product_variant(data.item)}
+              ) : null,
+            )}
+            <Text style={styles.Productdesc}>
+              {data.item.description.substring(0, 65)}{' '}
+            </Text>
+            <View style={styles.ProductListrow}>
+              {this.product_variant(data.item)}
 
-            {this.checkCart(data.item)}
+              {this.checkCart(data.item)}
+            </View>
           </View>
         </View>
-      </View>
+      </Animated.View>
     );
   };
 
@@ -1245,7 +1251,9 @@ export default class ProductListScreen extends React.Component {
             />
           </View>
           <View>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
               {this.state.cartegorydata.map((value, index) => (
                 <TouchableOpacity
                   style={styles.ProductListrow}
@@ -1278,6 +1286,7 @@ export default class ProductListScreen extends React.Component {
               ))}
             </ScrollView>
           </View>
+
           <FlatList
             data={this.state.data}
             keyExtractor={item => item.id.toString()}
@@ -1547,9 +1556,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     zIndex: 1,
+    //height: '100%',
     borderColor: globalcolor.PrimaryColor,
     borderRadius: 10,
     padding: 10,
+    marginTop: 33,
   },
 
   header: {

@@ -21,26 +21,23 @@ export default Categories = data => {
         console.log('categoryData...', JSON.stringify(responseJson));
         // console.log('length='+responseJson.length)
         if (responseJson.length > 0) {
+          WebService.myProductArray = [];
 
-          WebService.myProductArray=[];
-
-         
           for (var i = 0; i < responseJson.length; i++) {
-
             let object2 = {};
             //responseJson.map(item => {
-              (object2['id'] = responseJson[i].value),
+            (object2['id'] = responseJson[i].value),
               (object2['name'] = responseJson[i].name),
               //object2['id']=responseJson[i].value;
-             // object2['name']=responseJson[i].name;
-             // object2[`${responseJson[i].value}`] = responseJson[i].name
+              // object2['name']=responseJson[i].name;
+              // object2[`${responseJson[i].value}`] = responseJson[i].name
               //object2[`${responseJson[i].value}`] = responseJson[i].name
-           // });
-            console.log('====99===>', object2);
+              // });
+              console.log('====99===>', object2);
 
-            WebService.myProductArray.push(object2)
-         //   var obj={`responseJson[i].name`:responseJson[i].name};
-              //console.log("===44==",obj);
+            WebService.myProductArray.push(object2);
+            //   var obj={`responseJson[i].name`:responseJson[i].name};
+            //console.log("===44==",obj);
           }
 
           var FirstCategory = [];
@@ -48,17 +45,17 @@ export default Categories = data => {
             FirstCategory.push(responseJson[i]);
           }
           setDataSource1([...dataSource1, ...FirstCategory]);
-         
+
           var SecondCategory = [];
           for (var i = 4; i < 7; i++) {
-            console.log("dfsvefsdfedfs------",responseJson[i])
+            console.log('dfsvefsdfedfs------', responseJson[i]);
             SecondCategory.push(responseJson[i]);
           }
-          var object3={} 
-         
+          var object3 = {};
+
           object3['name'] = 'More';
-        
-          SecondCategory.push(object3)
+
+          SecondCategory.push(object3);
           setDataSource2([...dataSource2, ...SecondCategory]);
         } else {
           setIsListEnd(true);
@@ -78,7 +75,7 @@ export default Categories = data => {
             key={index}
             style={styles.categoryBtn}
             onPress={() => {
-                data.data.props.navigation.navigate('StoreListScreen', {
+              data.data.props.navigation.navigate('StoreListScreen', {
                 Catvalue: value.value,
                 catNamee: value.name,
                 location: data.data.location,
@@ -86,10 +83,10 @@ export default Categories = data => {
               });
             }}>
             <View style={styles.categoryIcon}>
-               <Image 
-                 source={{uri: ConfigFile.ImageBaseUrl + value.photos[0].path}} 
-                 style={styles.ImageStyle}
-               />
+              <Image
+                source={{uri: ConfigFile.ImageBaseUrl + value.photos[0].path}}
+                style={styles.ImageStyle}
+              />
             </View>
             {/* <Text style={styles.categoryBtnTxt}>{globalcolor.ImageBaseUrl+value.photos[0].path}</Text>  */}
             <Text style={styles.categoryBtnTxt}>
@@ -99,47 +96,45 @@ export default Categories = data => {
         ))}
       </View>
       <View style={styles.categoryContainer}>
-        {dataSource2.map((value, index) => (
-
-
-                value.name ==='More' ?
-                 <TouchableOpacity
-                  style={styles.categoryBtn}
-                  onPress={() => {
-                  data.data.props.navigation.navigate('AllCategories');
-                     }}>
-                   <View style={styles.categoryIcon}>
-                   <Image
-                    source={require('../../assets/img/more-3.png')} 
-                    style={styles.ImageStyle}
-                    />
+        {dataSource2.map((value, index) =>
+          value.name === 'More' ? (
+            <TouchableOpacity
+              key={index}
+              style={styles.categoryBtn}
+              onPress={() => {
+                data.data.props.navigation.navigate('AllCategories');
+              }}>
+              <View style={styles.categoryIcon}>
+                <Image
+                  source={require('../../assets/img/more-3.png')}
+                  style={styles.ImageStyle}
+                />
               </View>
               <Text style={styles.categoryBtnTxt}>More</Text>
-             </TouchableOpacity> 
-              : 
-               <TouchableOpacity
-                  key={index}
-                  style={styles.categoryBtn}
-                  onPress={() =>
-                 data.data.props.navigation.navigate('StoreListScreen', {
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              key={index}
+              style={styles.categoryBtn}
+              onPress={() =>
+                data.data.props.navigation.navigate('StoreListScreen', {
                   Catvalue: value.value,
-                 catNamee: value.name,
-                   location: data.data.location,
+                  catNamee: value.name,
+                  location: data.data.location,
                 })
-             }>
-     <View style={styles.categoryIcon}>
-    
-       <Image
-         source={{uri: ConfigFile.ImageBaseUrl + value.photos[0].path}} 
-         style={styles.ImageStyle}
-       /> 
-     </View>
-     <Text style={styles.categoryBtnTxt}>
-       {value.name.substring(0, 10)}
-    </Text>
-  </TouchableOpacity>
-                  
-         ) )}
+              }>
+              <View style={styles.categoryIcon}>
+                <Image
+                  source={{uri: ConfigFile.ImageBaseUrl + value.photos[0].path}}
+                  style={styles.ImageStyle}
+                />
+              </View>
+              <Text style={styles.categoryBtnTxt}>
+                {value.name.substring(0, 10)}
+              </Text>
+            </TouchableOpacity>
+          ),
+        )}
       </View>
     </View>
   );
