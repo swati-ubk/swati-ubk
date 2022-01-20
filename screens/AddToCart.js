@@ -58,21 +58,14 @@ export default class AddToCart extends Component {
     }
   }
 
-<<<<<<< HEAD
   importData2 = async () => {
     try {
-      // this.state.localcart = [];
+      this.state.localcart = [];
       const keys = await AsyncStorage.getAllKeys();
-=======
-  importData2= async () => {
-     try {
-        this.state.localcart = [];
-       const keys = await AsyncStorage.getAllKeys();
->>>>>>> 231ab78da370610d0b64d102063ad86a64433d13
 
-       const itemsArray = await AsyncStorage.multiGet(keys);
+      const itemsArray = await AsyncStorage.multiGet(keys);
 
-       let object2 = {};
+      let object2 = {};
       itemsArray.map(item => {
         object2[`${item[0]}`] = item[1];
       });
@@ -99,56 +92,11 @@ export default class AddToCart extends Component {
             //   totalPrice: item[1],
             // });
           } else {
-<<<<<<< HEAD
           }
         }
       });
 
       // this.fetchData();
-=======
-
-
-            const jsondata = JSON.parse(item[1]);
-            // console.log(jsondata)
-            let object = {};
-
-            if (jsondata.hasOwnProperty('count')) {
-              (object['productId'] = jsondata.id),
-              (object['variantId'] = jsondata.variants),
-              (object['quantity'] = jsondata.count);
-
-            console.log('asasasas----', object);
-            console.log(
-              'aaaaaa---2----',
-              this.state.localcart.hasOwnProperty(object),
-            );
-            this.setState({localcart: [...this.state.localcart, object]});
-
-          }
-          else{
-            for (const [key, value] of Object.entries(jsondata.variants)) {
-              // console.log(`${key}: ${value}`);
-              //console.log("======22222======")
-              object = {};
-              (object['productId'] = jsondata.id),
-                (object['variantId'] = `${key}`),
-                (object['quantity'] = `${value}`);
-              console.log('aaaaaa---1----', object);
-
-              this.setState({localcart: [...this.state.localcart, object]});
-            }
-
-          }
-        }
-         }
-
-       });
-
-
-    console.log('wwwww========..', this.state.localcart);
-    
-      this.fetchData();
->>>>>>> 231ab78da370610d0b64d102063ad86a64433d13
     } catch (error) {
       console.error(error);
     }
@@ -232,7 +180,7 @@ export default class AddToCart extends Component {
       });
       console.log('======99999======', this.state.localcart);
 
-     this.fetchData();
+      this.fetchData();
     } catch (error) {
       console.error(error);
     }
@@ -248,8 +196,7 @@ export default class AddToCart extends Component {
       WebService.GetData('business-details/' + SelectedStoreID)
         .then(response => response.json())
         .then(responseJson => {
-
-          console.log("sdcdcc------",responseJson)
+          console.log('sdcdcc------', responseJson);
           if (responseJson.length > 0) {
             this.setState({
               acceptsCOD: responseJson[0].acceptsCOD,
@@ -291,7 +238,7 @@ export default class AddToCart extends Component {
           requestOptions,
         );
         const json = await response.json();
-        console.log("---------33333----",json)
+        console.log('---------33333----', json);
         if (json.items.length > 0) {
           this.setState({
             data: json,
@@ -366,7 +313,6 @@ export default class AddToCart extends Component {
       this.importData2();
     }
   };
-
 
   handleBackButtonClick = () => {
     // console.log('Back buttton............', props.navigation);
@@ -466,7 +412,7 @@ export default class AddToCart extends Component {
     if (nameee == '') {
       nameee = item.item.productName;
     } else {
-      nameee = item.item.productName+" "+item.item.variant.name;
+      nameee = item.item.productName + ' ' + item.item.variant.name;
     }
 
     return (
@@ -474,23 +420,22 @@ export default class AddToCart extends Component {
         <View style={{flex: 0.6}}>
           <Text>{nameee} </Text>
           <Text style={globalstyle.ProductPrice}>
-            Price ₹
+            ₹
             <Text style={{fontWeight: 'bold', color: '#000000'}}>
               {' '}
               {item.item.variant.sellingPrice}{' '}
             </Text>
-
-            { item.item.variant.maximumPrice != item.item.variant.sellingPrice ?
-
-            <Text
-              style={{
-                fontWeight: 'bold',
-                color: '#000000',
-                textDecorationLine: 'line-through',
-              }}>
-              ₹ {item.item.variant.maximumPrice}{' '}
-            </Text>
-            :null}
+            {item.item.variant.maximumPrice !=
+            item.item.variant.sellingPrice ? (
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: '#000000',
+                  textDecorationLine: 'line-through',
+                }}>
+                ₹ {item.item.variant.maximumPrice}{' '}
+              </Text>
+            ) : null}
           </Text>
         </View>
 
@@ -533,7 +478,7 @@ export default class AddToCart extends Component {
         </View>
       </View>
     );
-  }; 
+  };
 
   render() {
     if (this.state.EmptyCart) {
@@ -700,7 +645,10 @@ const Footer = data => {
             {/* // onPress={() => checkOut(data.data)}> */}
 
             <View style={globalstyle.FooterTabButton}>
-              <Text style={globalstyle.FooterTabText}> Amount to Pay  ₹ {total} </Text>
+              <Text style={globalstyle.FooterTabText}>
+                {' '}
+                Amount to Pay ₹ {total}{' '}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

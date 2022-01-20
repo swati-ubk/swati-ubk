@@ -50,24 +50,22 @@ class HomeScreen extends Component {
       lng: '',
       PopularCat1: [],
       PopularCat2: [],
-      
     };
   }
 
   componentDidMount() {
-
     // const myObjArray = [
-      // {id: 1, name: "Dharmik" },
-      // {id: 2, name: "Bhavesh" },
-      // {id: 3, name: "Piyush" }
- //   ];
+    // {id: 1, name: "Dharmik" },
+    // {id: 2, name: "Bhavesh" },
+    // {id: 3, name: "Piyush" }
+    //   ];
 
- //if(WebService.myProductArray.length>0)
- //{
-  //const index = WebService.myProductArray.map(function(x) {return x.id; }).indexOf('institute');
-  //console.log("=========33========",WebService.myProductArray[index].name);
-  //console.log("-----------44444------------",WebService.myProductArray);
- //}
+    //if(WebService.myProductArray.length>0)
+    //{
+    //const index = WebService.myProductArray.map(function(x) {return x.id; }).indexOf('institute');
+    //console.log("=========33========",WebService.myProductArray[index].name);
+    //console.log("-----------44444------------",WebService.myProductArray);
+    //}
 
     this.request_location_runtime_permission();
     WebService.GetDataJSon(`site-data/mobile-app-settings`).then(response => {
@@ -82,16 +80,6 @@ class HomeScreen extends Component {
       this.getChangeAddress();
     });
   }
-
-
-
-
-
-
-
-
-
-
 
   request_location_runtime_permission = async () => {
     //async request_location_runtime_permission() {
@@ -255,8 +243,8 @@ class HomeScreen extends Component {
         formatted_address: this.state.addresss,
       },
     };
-   
-    console.log("asssssss-----",this.state.PopularCat2.length);
+
+    console.log('asssssss-----', this.state.PopularCat2.length);
     return (
       <SafeAreaView style={[styles.container, {marginTop: 50}]}>
         {/* ,{ callHome: this.proFum.bind(this)} */}
@@ -283,9 +271,11 @@ class HomeScreen extends Component {
             </View>
           </View>
         </TouchableOpacity> */}
-        <ScrollView style={styles.container} >
+        <ScrollView style={styles.container}>
           <View style={styles.container}>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
               {this.state.data.map((value, index) => (
                 <View style={styles.container} key={index}>
                   <View style={styles.item}>
@@ -303,15 +293,15 @@ class HomeScreen extends Component {
                 <Categories data={CategoryData} />
               </View>
               <View style={styles.middle}>
-              { this.state.PopularCat1.length !== 0 ?
-                <View style={styles.categoryTitleContainer}>
-                  <View style={styles.categoryName}>
-                    <Text style={styles.categorytitle}>
-                      Popular in {this.state.popularCategories[0]}
-                    </Text>
-                  </View>
-                  <View style={styles.categoryName}>
-                    {/* <Text
+                {this.state.PopularCat1.length !== 0 ? (
+                  <View style={styles.categoryTitleContainer}>
+                    <View style={styles.categoryName}>
+                      <Text style={styles.categorytitle}>
+                        Popular in {this.state.popularCategories[0]}
+                      </Text>
+                    </View>
+                    <View style={styles.categoryName}>
+                      {/* <Text
                       style={styles.showall}
                       onPress={() => {
                         this.props.navigation.navigate('StoreListScreen', {
@@ -321,18 +311,18 @@ class HomeScreen extends Component {
                       }}>
                       View all
                     </Text> */}
+                    </View>
                   </View>
-                </View>
-                 : null }
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                ) : null}
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
                   {this.state.PopularCat1.map((value, index) => (
-                    
                     <TouchableOpacity
                       key={index}
                       onPress={() => {
                         this.props.navigation.navigate('StoreDetailsScreen', {
                           StoreId: value.id,
-                         
                         });
                       }}>
                       <View
@@ -376,15 +366,15 @@ class HomeScreen extends Component {
                 </ScrollView>
               </View>
               <View style={styles.bottom}>
-              { this.state.PopularCat2.length !== 0 ?
-                <View style={styles.categoryTitleContainer}>
-                  <View style={styles.categoryName}>
-                    <Text style={styles.categorytitle}>
-                      Popular in {this.state.popularCategories[1]} 
-                    </Text>
-                  </View>
-                  <View style={styles.categoryName}>
-                    {/* <Text
+                {this.state.PopularCat2.length !== 0 ? (
+                  <View style={styles.categoryTitleContainer}>
+                    <View style={styles.categoryName}>
+                      <Text style={styles.categorytitle}>
+                        Popular in {this.state.popularCategories[1]}
+                      </Text>
+                    </View>
+                    <View style={styles.categoryName}>
+                      {/* <Text
                       style={styles.showall}
                       onPress={() => {
                         this.props.navigation.navigate('StoreListScreen', {
@@ -394,9 +384,9 @@ class HomeScreen extends Component {
                       }}>
                       View all
                     </Text> */}
+                    </View>
                   </View>
-                </View>
-                :null }
+                ) : null}
                 <ScrollView horizontal={true}>
                   {this.state.PopularCat2.map((value, index) => (
                     <TouchableOpacity
@@ -404,7 +394,6 @@ class HomeScreen extends Component {
                       onPress={() => {
                         this.props.navigation.navigate('StoreDetailsScreen', {
                           StoreId: value.id,
-                         
                         });
                       }}>
                       <View
@@ -638,7 +627,7 @@ const styles = StyleSheet.create({
     fontFamily: globalcolor.Font,
     marginLeft: 25,
     fontSize: 15,
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   },
   showall: {
     textAlign: 'right',
@@ -656,7 +645,9 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   item: {
-    margin: 8,
+    margin: 5,
+    marginLeft: 15,
+    marginRight: 15,
   },
   itemPhoto: {
     width: 280,

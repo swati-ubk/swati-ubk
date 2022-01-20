@@ -91,7 +91,7 @@ const ForgotPasswordScreen = probs => {
         </View>
         <View style={{marginTop: 20}}>
           <Button
-            title="Verify"
+            title="Send Email"
             onPress={() => confirmCode()}
             color={globalcolor.PrimaryColor}
             style={{borderRadius: 20, height: 50}}

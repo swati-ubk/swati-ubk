@@ -280,9 +280,9 @@ const SignInScreen = ({navigation}) => {
         </View>
         {data.isValidPassword ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={globalstyle.errorMsg}>
+            {/* <Text style={globalstyle.errorMsg}>
               Enter a strong password of minimum 6 letters.
-            </Text>
+            </Text> */}
           </Animatable.View>
         )}
 

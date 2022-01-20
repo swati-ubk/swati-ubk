@@ -1188,25 +1188,25 @@ export default class ProductListScreen extends React.Component {
             {this.state.count} Item | ₹ {this.state.totalPrice}
           </Text>
         </View>
-        <View style={styles.footerItem2}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('AddToCart', {
-                StoreID: this.state.StoreID,
-                acceptsCOD: this.state.acceptsCOD,
-                requireSlot: this.state.requireSlot,
-                totalPrice: this.state.totalPrice,
-                count: this.state.count,
-                // CallProdutList: this.backToproduct.bind(this),
-              });
-            }}>
-            <Text
-              style={{textAlign: 'right', color: '#ffffff', marginRight: 10}}>
+        <TouchableOpacity
+          style={{flex: 1}}
+          onPress={() => {
+            this.props.navigation.navigate('AddToCart', {
+              StoreID: this.state.StoreID,
+              acceptsCOD: this.state.acceptsCOD,
+              requireSlot: this.state.requireSlot,
+              totalPrice: this.state.totalPrice,
+              count: this.state.count,
+              // CallProdutList: this.backToproduct.bind(this),
+            });
+          }}>
+          <View style={{padding: 10}}>
+            <Text style={{textAlign: 'right', color: '#ffffff'}}>
               View Cart
               {/* <FontAwesome name="plus" color={globalcolor.Textcolor} size={20} style={{ marginLeft: 10 }} /> */}
             </Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
     ) : null;
   }
@@ -1355,9 +1355,14 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   footerItem2: {
-    flex: 0.5,
-    textAlign: 'right',
-    color: '#ffffff',
+    flex: 1,
+    borderWidth: 2,
+    alignSelf: 'center',
+    padding: 20,
+    alignSelf: 'center',
+    // alignItems: 'flex-end',
+    //textAlign: 'right',
+    // color: '#ffffff',
   },
   item: {
     marginLeft: 5,

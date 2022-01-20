@@ -364,7 +364,7 @@ export default class AddToCart extends Component {
         <View style={{flex: 0.6}}>
           <Text>{nameee} </Text>
           <Text style={globalstyle.ProductPrice}>
-            Price ₹
+            ₹
             <Text style={{fontWeight: 'bold', color: '#000000'}}>
               {' '}
               {item.item.variant.sellingPrice}{' '}

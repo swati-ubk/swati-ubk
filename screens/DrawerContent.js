@@ -64,14 +64,25 @@ export function DrawerContent(props) {
   /////const {loginState} = React.useContext(AuthContext);
 
   ///console.log( AuthContext.getItem());
-  console.log(
-    'sdsdsds....',
-    // JSON.stringify(props.userData.memberships[0].plan),
-  );
+  console.log('memberships data....', JSON.stringify(props.userData));
   let userType = 'Free';
-  // if (props.userData.memberships[0].plan === 'USER_PREMIUM') {
-  //   userType = 'Premium';
+
+  console.log('membership length===', props.userData.memberships.length);
+  if (props.userData.memberships.length > 0) {
+    if (props.userData.memberships[0].hasOwnProperty('plan')) {
+      console.log('i am  Premium...');
+      if (
+        props.userData.memberships[0].plan === 'USER_PREMIUM' &&
+        props.userData.memberships[0].active == true
+      ) {
+        userType = 'Premium';
+      }
+    }
+  }
+
+  // if (premiumPlan.hasOwnProperty('plan')) {
   // }
+  // console.log('premiumPlan...', premiumPlan);
 
   return (
     <View style={{flex: 1}}>
