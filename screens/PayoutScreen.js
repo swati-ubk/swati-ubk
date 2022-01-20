@@ -157,7 +157,12 @@ const PayoutScreen = probs => {
 
     return (
       <TouchableOpacity
-        onPress={() => probs.navigation.navigate('PayoutDetailsScreen')}>
+        onPress={() =>
+          probs.navigation.navigate('PayoutDetailsScreen', {
+            referencedata: data.item,
+            referenceId: data.item.referenceId,
+          })
+        }>
         <View style={styles.ListCategoryrow}>
           <View style={styles.ListFirstCategoryIcon}>
             <Text style={{textAlign: 'left'}}>{data.item.requestedAmount}</Text>
@@ -242,7 +247,7 @@ const PayoutScreen = probs => {
           </View>
         </View>
 
-        <View style={styles.ListCategoryrow}>
+        {/* <View style={styles.ListCategoryrow}>
           <View style={styles.ListFirstCategoryIcon}>
             <Text style={{textAlign: 'left'}}>Amount</Text>
           </View>
@@ -253,7 +258,7 @@ const PayoutScreen = probs => {
           <View style={{flex: 0.3, alignSelf: 'center'}}>
             <Text style={styles.ListText}>Satus</Text>
           </View>
-        </View>
+        </View> */}
         <FlatList
           data={data}
           keyExtractor={item => item.id.toString()}

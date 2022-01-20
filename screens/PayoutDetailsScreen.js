@@ -22,7 +22,7 @@ const PayoutDetailsScreen = probs => {
   console.log('PayoutDetailsScreen....', probs);
   // console.log(order)
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(probs.route.params.referencedata);
   const [DelivryType, setDeliveryType] = useState('Delivery Address');
   const [Items, setItems] = useState([]);
   const [Token, SetToken] = useState('');
@@ -30,37 +30,34 @@ const PayoutDetailsScreen = probs => {
   useEffect(() => {
     async function fetchMyAPI() {
       try {
-        //     let userToken = await AsyncStorage.getItem('userToken');
-        //     console.log('userToken.....', userToken);
-        //     SetToken(userToken);
-        //     const requestOptions = {
-        //       method: 'GET',
-        //       headers: {
-        //         'Content-Type': 'application/json',
-        //         Authorization: 'Bearer ' + userToken,
-        //       },
-        //       // body: JSON.stringify({ })
-        //     };
-        //     WebService.PostData(
-        //       `my-orders/${probs.route.params.orderId}?limit=20&skip=0`,
-        //       requestOptions,
-        //     )
-        //       .then(res => res.json())
-        //       .then(resJson => {
-        //         setItems(resJson[0].items);
-        //         if (resJson[0].orderType == 'BOOM_PICKUP') {
-        //           setDeliveryType('Pickup Address');
-        //         }
-        //         setData(resJson);
-        //       })
-        //       .catch(e => console.log(e));
+        // console.log('Payout details....', data);
+        // let userToken = await AsyncStorage.getItem('userToken');
+        // console.log('userToken.....', userToken);
+        // SetToken(userToken);
+        // const requestOptions = {
+        //   method: 'GET',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: 'Bearer ' + userToken,
+        //   },
+        //   // body: JSON.stringify({ })
+        // };
+        // WebService.PostData(
+        //   `customer/settlement?referenceId=${probs.route.params.referenceId}`,
+        //   requestOptions,
+        // )
+        //   .then(res => res.json())
+        //   .then(resJson => {
+        //     console.log('Payout Details.....', resJson);
+        //   })
+        //   .catch(e => console.log(e));
       } catch (e) {
         console.log(e);
       }
     }
 
     fetchMyAPI();
-  }, []);
+  }, [probs.route.params.referenceId]);
 
   function handleBackButtonClick() {
     //console.log(probs.navigation);
@@ -147,14 +144,14 @@ const PayoutDetailsScreen = probs => {
       {/*------------BACK BUTTON END------------------*/}
       <ScrollView>
         <SafeAreaView>
-          <View style={{flex: 1, padding: 20}}>
+          <View style={{flex: 1, padding: 10}}>
             <Text
               style={{
                 textAlign: 'left',
                 fontSize: 20,
                 fontFamily: globalcolor.Font,
               }}>
-              Order ID#:25555225
+              Payout Breakup
             </Text>
           </View>
           <View
@@ -165,66 +162,92 @@ const PayoutDetailsScreen = probs => {
             }}
           />
           <View style={styles.OTPContainer}>
-            <View style={{flex: 0.5}}>
-              <Text style={styles.OtpText}>Store name: </Text>
-            </View>
-            <View style={{flex: 0.5}}>
-              <Text style={{textAlign: 'right'}}>jkasdadhs</Text>
-            </View>
-          </View>
-
-          <View style={styles.OTPContainer}>
-            <View style={{flex: 0.5}}>
-              <Text style={styles.OtpText}>Name</Text>
+            <View style={{flex: 1}}>
+              <Text style={styles.OtpText}>Reference ID: </Text>
             </View>
             <View style={{flex: 1}}>
-              <Text style={{textAlign: 'right'}}>uttam</Text>
-            </View>
-          </View>
-          <View style={styles.OTPContainer}>
-            <View style={{flex: 0.5}}>
-              <Text style={styles.OtpText}>Email Id</Text>
-            </View>
-            <View style={{flex: 1}}>
-              <Text style={{textAlign: 'right'}}>ubk@gmail.com</Text>
-            </View>
-          </View>
-          <View style={styles.OTPContainer}>
-            <View style={{flex: 1}}>
-              <Text style={styles.OtpText}>Mobile Number</Text>
-            </View>
-            <View style={{flex: 1}}>
-              <Text style={{textAlign: 'right'}}>6200938310</Text>
+              <Text style={{textAlign: 'right'}}>{data.referenceId}</Text>
             </View>
           </View>
 
           <View style={styles.OTPContainer}>
             <View style={{flex: 1}}>
-              <Text style={styles.OtpText}>Created At</Text>
+              <Text style={styles.OtpText}>Speed</Text>
             </View>
             <View style={{flex: 1}}>
-              {/* <Text style={{textAlign: 'right'}}>
+              <Text style={{textAlign: 'right'}}>{data.speed}</Text>
+            </View>
+          </View>
+          <View style={styles.OTPContainer}>
+            <View style={{flex: 1}}>
+              <Text style={styles.OtpText}>Requested Amount</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={{textAlign: 'right'}}>{data.requestedAmount}</Text>
+            </View>
+          </View>
+          <View style={styles.OTPContainer}>
+            <View style={{flex: 1}}>
+              <Text style={styles.OtpText}>Service Charge (-)</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={{textAlign: 'right'}}>
+                {data.data.serviceCharge}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.OTPContainer}>
+            <View style={{flex: 1}}>
+              <Text style={styles.OtpText}>Tax (-)</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={{textAlign: 'right'}}>{data.gst}</Text>
+            </View>
+          </View>
+          <View style={styles.OTPContainer}>
+            <View style={{flex: 0.5}}>
+              <Text style={styles.OtpText}>TDS (-)</Text>
+            </View>
+            <View style={{flex: 0.5}}>
+              <Text style={{textAlign: 'right'}}> ₹ {data.data.tds}</Text>
+            </View>
+          </View>
+          <View style={styles.OTPContainer}>
+            <View style={{flex: 0.5}}>
+              <Text style={styles.OtpText}>Amount to Receive</Text>
+            </View>
+            <View style={{flex: 0.5}}>
+              <Text style={{textAlign: 'right'}}> ₹ {data.amount}</Text>
+            </View>
+          </View>
+          <View style={styles.OTPContainer}>
+            <View style={{flex: 0.5}}>
+              <Text style={styles.OtpText}>Requested At</Text>
+            </View>
+            <View style={{flex: 0.5}}>
+              <Text style={{textAlign: 'right'}}>
+                <Text style={{textAlign: 'right'}}>
                   {' '}
-                  {Moment(data[0].events[0].createdAt).format(
-                    'DD MMM YYYY hh:mm',
-                  )}
-                </Text> */}
+                  {Moment(data.events[0].createdAt).format('DD MMM YYYY hh:mm')}
+                </Text>
+              </Text>
             </View>
           </View>
           <View style={styles.OTPContainer}>
             <View style={{flex: 0.5}}>
-              <Text style={styles.OtpText}>Order Amount</Text>
+              <Text style={styles.OtpText}>UTR</Text>
             </View>
             <View style={{flex: 0.5}}>
-              <Text style={{textAlign: 'right'}}> ₹ 52222</Text>
+              <Text style={{textAlign: 'right'}}></Text>
             </View>
           </View>
           <View style={styles.OTPContainer}>
             <View style={{flex: 0.5}}>
-              <Text style={styles.OtpText}>Payment Type</Text>
+              <Text style={styles.OtpText}>Events</Text>
             </View>
             <View style={{flex: 0.5}}>
-              <Text style={{textAlign: 'right'}}>gfdggfdg</Text>
+              <Text style={{textAlign: 'right'}}>{data.events[0].event}</Text>
             </View>
           </View>
           <View

@@ -43,7 +43,6 @@ export default class AddToCart extends Component {
     this.importData();
   }
   componentDidUpdate(prevProps, prevState) {
-    
     let a = prevState.checkTotalPrice;
     let b = this.props.route.params.totalPrice;
     console.log('a========', a);
@@ -59,9 +58,9 @@ export default class AddToCart extends Component {
     }
   }
 
-  importData2= async () => {
+  importData2 = async () => {
     try {
-     // this.state.localcart = [];
+      // this.state.localcart = [];
       const keys = await AsyncStorage.getAllKeys();
 
       const itemsArray = await AsyncStorage.multiGet(keys);
@@ -82,9 +81,7 @@ export default class AddToCart extends Component {
           `${item[0]}` == 'Coordinate' ||
           `${item[0]}` == 'address'
         ) {
-
-        }
-        else{
+        } else {
           if (`${item[0]}` == 'count') {
             // console.log("a.....",item[1])
             this.setState({
@@ -95,15 +92,11 @@ export default class AddToCart extends Component {
               totalPrice: item[1],
             });
           } else {
-
           }
         }
-
-
       });
 
-    
-      this.fetchData();
+      // this.fetchData();
     } catch (error) {
       console.error(error);
     }
@@ -204,7 +197,6 @@ export default class AddToCart extends Component {
         .then(response => response.json())
         .then(responseJson => {
           if (responseJson.length > 0) {
-        
             this.setState({
               acceptsCOD: responseJson[0].acceptsCOD,
               requireSlot: responseJson[0].requireSlot,
@@ -289,7 +281,7 @@ export default class AddToCart extends Component {
       };
       //  console.log('aaaaaaaaaaaaaaaa....', '' + JSON.stringify(data_obj));
       await AsyncStorage.setItem(data.item.productId, JSON.stringify(data_obj));
-      this.importData();
+      this.importData2();
     } else {
       var veri_id = data.item.variant.id;
       var v_obj = userData.variants;
@@ -316,7 +308,7 @@ export default class AddToCart extends Component {
         // '=================999=============',
         JSON.stringify(data_obj),
       );
-      this.importData();
+      this.importData2();
     }
   };
   handleBackButtonClick = () => {
@@ -508,7 +500,7 @@ export default class AddToCart extends Component {
   // }
 
   render() {
-   if (this.state.EmptyCart) {
+    if (this.state.EmptyCart) {
       return (
         <SafeAreaView style={styles.container}>
           <View style={{marginTop: 80, flex: 1}}>
@@ -529,7 +521,7 @@ export default class AddToCart extends Component {
           </View>
         </SafeAreaView>
       );
-   } else {
+    } else {
       let totalcost = this.state.totalPrice;
 
       let data1 = {
