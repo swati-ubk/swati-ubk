@@ -89,6 +89,22 @@ const PayoutScreen = probs => {
       </View>
     );
   };
+  const getSettlementStatusText = state => {
+    switch (state) {
+      case 'PENDING':
+        return 'Approved';
+      case 'INITIATED':
+        return 'Sent to Bank';
+      case 'PROCESSED':
+        return 'Transferred';
+      case 'FAILED':
+        return 'Rejected by Bank';
+      case 'REFUNDED':
+        return 'Refunded';
+      default:
+        return '';
+    }
+  };
   const IsPremiumUser = Status => {
     let StatusCode = '';
     let ColorBorder = '';
@@ -120,7 +136,7 @@ const PayoutScreen = probs => {
             color: Colortext,
             textAlign: 'center',
           }}>
-          {StatusCode}
+          {getSettlementStatusText(StatusCode)}
         </Text>
       </View>
     );
@@ -165,18 +181,33 @@ const PayoutScreen = probs => {
         }>
         <View style={styles.ListCategoryrow}>
           <View style={styles.ListFirstCategoryIcon}>
-            <Text style={{textAlign: 'left'}}>{data.item.requestedAmount}</Text>
-            {/* <Text>{value.email}</Text> */}
-          </View>
-
-          <View style={{flex: 0.3, alignSelf: 'center'}}>
+            <Text style={{textAlign: 'left', fontWeight: 'bold'}}>
+              {' '}
+              {data.item.referenceId}
+            </Text>
             <Text style={{textAlign: 'left'}}>
+              {' '}
+              ₹ {data.item.requestedAmount}
+            </Text>
+            <Text style={{color: globalcolor.SeconderFontColor}}>
               {' '}
               {Moment(data.item.createdAt).format('DD MMM YYYY')}
             </Text>
           </View>
+
           <View style={{flex: 0.3, alignSelf: 'center'}}>
             {IsPremiumUser(data.item.status)}
+          </View>
+          <View style={{flex: 0.1, alignSelf: 'center'}}>
+            <Text style={{textAlign: 'right'}}>
+              {' '}
+              <FontAwesome
+                style={{alignSelf: 'flex-end'}}
+                name="chevron-right"
+                color={globalcolor.SeconderFontColor}
+                size={20}
+              />
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -308,22 +339,20 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   ListFirstCategoryIcon: {
-    flex: 0.3,
+    flex: 0.6,
     marginLeft: 10,
     // backgroundColor: globalcolor.Separator,
     shadowColor: '#fff',
-    padding: 20,
   },
   ListSecondIcon: {
     alignSelf: 'flex-end',
     flex: 0.3,
-    padding: 20,
   },
   ListCategoryrow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-
     borderBottomColor: globalcolor.Separator,
+    padding: 10,
   },
   ListText: {
     fontFamily: globalcolor.Font,

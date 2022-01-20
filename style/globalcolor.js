@@ -21,4 +21,5 @@ export const globalcolor = {
   BorderColor: '#C4C4C4',
   AlertBorder: '#ffe58f',
   AlertBackground: '#fffbe6',
+  StatusPoint: '#1890ff',
 };

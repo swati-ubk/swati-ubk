@@ -25,32 +25,34 @@ const PayoutDetailsScreen = probs => {
   const [data, setData] = useState(probs.route.params.referencedata);
   const [DelivryType, setDeliveryType] = useState('Delivery Address');
   const [Items, setItems] = useState([]);
-  const [Token, SetToken] = useState('');
+  const [UTRNo, SetUTRNo] = useState('');
+  const [statusbardata, Setstatusbardata] = useState(
+    probs.route.params.referencedata.events,
+  );
+
+  // const statusbardata = [
+  //   {title: 'Stop 1', letter: 'A', isCurrent: false},
+  //   {title: 'Stop 2', letter: 'B', isCurrent: true},
+  //   {title: 'Stop 3', letter: 'C', isCurrent: false},
+  //   {title: 'Stop 4', letter: 'D', isCurrent: false},
+  //   {title: 'Stop 5', letter: 'E', isCurrent: true},
+  // ];
 
   useEffect(() => {
     async function fetchMyAPI() {
       try {
-        // console.log('Payout details....', data);
-        // let userToken = await AsyncStorage.getItem('userToken');
-        // console.log('userToken.....', userToken);
-        // SetToken(userToken);
-        // const requestOptions = {
-        //   method: 'GET',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     Authorization: 'Bearer ' + userToken,
-        //   },
-        //   // body: JSON.stringify({ })
-        // };
-        // WebService.PostData(
-        //   `customer/settlement?referenceId=${probs.route.params.referenceId}`,
-        //   requestOptions,
-        // )
-        //   .then(res => res.json())
-        //   .then(resJson => {
-        //     console.log('Payout Details.....', resJson);
-        //   })
-        //   .catch(e => console.log(e));
+        setData(probs.route.params.referencedata);
+        Setstatusbardata(probs.route.params.referencedata.events);
+        // Setstatusbardata(probs.route.params.referencedata)
+        console.log('Payout details....', probs.route.params.referencedata);
+        console.log(
+          'Payout events....',
+          probs.route.params.referencedata.events,
+        );
+        //if()
+        if (probs.route.params.referencedata.hasOwnProperty('payout')) {
+          SetUTRNo(probs.route.params.referencedata.payout.utr);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -100,6 +102,22 @@ const PayoutDetailsScreen = probs => {
       </View>
     );
   };
+  const getSettlementStatusText = state => {
+    switch (state) {
+      case 'PENDING':
+        return 'Approved';
+      case 'INITIATED':
+        return 'Sent to Bank';
+      case 'PROCESSED':
+        return 'Transferred';
+      case 'FAILED':
+        return 'Rejected by Bank';
+      case 'REFUNDED':
+        return 'Refunded';
+      default:
+        return '';
+    }
+  };
   const CancelOrder = OrderStatus => {
     return OrderStatus == 'CREATED' ? (
       <TouchableOpacity
@@ -137,23 +155,13 @@ const PayoutDetailsScreen = probs => {
               fontFamily: globalcolor.Font,
               fontSize: 20,
             }}>
-            Payout Details
+            Payout Breakup
           </Text>
         </View>
       </View>
       {/*------------BACK BUTTON END------------------*/}
       <ScrollView>
         <SafeAreaView>
-          <View style={{flex: 1, padding: 10}}>
-            <Text
-              style={{
-                textAlign: 'left',
-                fontSize: 20,
-                fontFamily: globalcolor.Font,
-              }}>
-              Payout Breakup
-            </Text>
-          </View>
           <View
             style={{
               height: 0.5,
@@ -229,7 +237,7 @@ const PayoutDetailsScreen = probs => {
               <Text style={{textAlign: 'right'}}>
                 <Text style={{textAlign: 'right'}}>
                   {' '}
-                  {Moment(data.events[0].createdAt).format('DD MMM YYYY hh:mm')}
+                  {Moment(data.createdAt).format('DD MMM YYYY hh:mm')}
                 </Text>
               </Text>
             </View>
@@ -239,15 +247,7 @@ const PayoutDetailsScreen = probs => {
               <Text style={styles.OtpText}>UTR</Text>
             </View>
             <View style={{flex: 0.5}}>
-              <Text style={{textAlign: 'right'}}></Text>
-            </View>
-          </View>
-          <View style={styles.OTPContainer}>
-            <View style={{flex: 0.5}}>
-              <Text style={styles.OtpText}>Events</Text>
-            </View>
-            <View style={{flex: 0.5}}>
-              <Text style={{textAlign: 'right'}}>{data.events[0].event}</Text>
+              <Text style={{textAlign: 'right'}}>{UTRNo}</Text>
             </View>
           </View>
           <View
@@ -258,6 +258,38 @@ const PayoutDetailsScreen = probs => {
               backgroundColor: '#C8C8C8',
             }}
           />
+          <View style={styles.OTPContainer}>
+            <View style={{flex: 0.5}}>
+              <Text style={styles.OtpText}>Events</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <View style={{flex: 1}}>
+                <View style={globalstyle.verticalLine}></View>
+                <View style={globalstyle.verticalWrap}>
+                  {/* <View style={globalstyle.itemWrap}>
+                    <View style={globalstyle.firstPoint}></View>
+                    <View style={{marginLeft: 5, flex: 1}}>
+                      <Text>UTTAM</Text>
+                    </View>
+                  </View> */}
+                  {statusbardata.map((item, index) => (
+                    <View style={globalstyle.itemWrap} key={index}>
+                      <View style={globalstyle.firstPoint}></View>
+                      <View style={{marginLeft: 5, flex: 1}}>
+                        <Text style={{marginTop: 15}}>
+                          {getSettlementStatusText(item.event)}
+                        </Text>
+                        <Text style={{color: globalcolor.SeconderFontColor}}>
+                          {' '}
+                          {Moment(item.createdAt).format('DD MMM YYYY hh:mm')}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          </View>
         </SafeAreaView>
       </ScrollView>
     </View>

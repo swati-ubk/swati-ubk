@@ -313,4 +313,51 @@ export const globalstyle = StyleSheet.create({
     resizeMode: 'stretch',
     alignItems: 'center',
   },
+
+  /***********************Status bar start here*******************************************/
+  verticalLine: {
+    backgroundColor: globalcolor.StatusPoint,
+    width: 1,
+    height: '95%',
+    position: 'absolute',
+    marginLeft: 35,
+    marginTop: 20,
+  },
+  verticalWrap: {
+    justifyContent: 'space-between',
+    height: '100%',
+  },
+  itemWrap: {
+    width: 200,
+    //  height: 40,
+    marginLeft: 20,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pointWrap: {
+    backgroundColor: 'black',
+    height: 20,
+    width: 20,
+    marginLeft: 5,
+    alignItems: 'center',
+  },
+  firstPoint: {
+    backgroundColor: globalcolor.StatusPoint,
+    borderRadius: 20,
+    height: 10,
+    width: 10,
+    // marginTop: 10,
+    marginLeft: 10,
+  },
+  EndPoint: {
+    backgroundColor: '#1890ff',
+    borderRadius: 20,
+    height: 10,
+    width: 10,
+    marginLeft: 10,
+  },
+  markerText: {color: 'white'},
+  currentMarker: {color: 'green'},
+  /***********************Status bar END here*******************************************/
 });
