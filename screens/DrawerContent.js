@@ -61,13 +61,8 @@ export function DrawerContent(props) {
     }
   };
 
-  /////const {loginState} = React.useContext(AuthContext);
-
-  ///console.log( AuthContext.getItem());
-  console.log('memberships data....', JSON.stringify(props.userData));
   let userType = 'Free';
-
-  console.log('membership length===', props.userData.memberships.length);
+  // console.log('membership length===', props.userData.memberships.length);
   if (props.userData.memberships.length > 0) {
     if (props.userData.memberships[0].hasOwnProperty('plan')) {
       console.log('i am  Premium...');
@@ -108,32 +103,6 @@ export function DrawerContent(props) {
                 </Title>
                 {/* <Caption style={styles.caption}>{ props.userData.email }</Caption> */}
               </View>
-            </View>
-
-            <View style={styles.column}>
-              {/* <View style={styles.row}>
-
-                                <View style={{flexDirection:'column'}}>
-                                    <Paragraph style={[styles.paragraph, styles.caption]}>Diskounto Coin </Paragraph>
-
-                                    <View style={styles.row2}>
-                                    <Avatar.Image style={{ marginRight : 15}}
-                                    source={{
-                                        uri: 'https://diskounto.com/common/reward-coin.png'
-                                    }}
-                                    size={20}
-                                    />
-                                    <Caption style={styles.caption}>{ props.userData.promoCoins }</Caption>
-                                    </View>
-
-                                
-                                </View>
-
-                                <View style={{flexDirection:'column'}}>
-                                    <Paragraph style={[styles.paragraph, styles.caption]}>Diskounto Cash</Paragraph>
-                                    <Caption style={styles.caption}> ₹ { props.userData.cashBalance }</Caption>
-                                </View>
-                            </View> */}
             </View>
           </View>
 
