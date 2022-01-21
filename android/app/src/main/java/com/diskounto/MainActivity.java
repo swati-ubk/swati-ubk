@@ -1,4 +1,4 @@
-package com.diskounto;
+package app.diskounto.diskounto;
 
 import com.facebook.react.ReactActivity;
 
