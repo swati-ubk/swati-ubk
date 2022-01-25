@@ -67,7 +67,20 @@ export default class ProductListScreen extends React.Component {
       //Put your Data loading function here instead of my this.loadData()
     });
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    let a =prevState.StoreID;
+    let b =  this.props.route.params.StoreId;
+   if(a!=b)
+   {
+     console.log("update is calling.....")
+       this.setState({data:[]}); 
+       this.setState({loading:true});
+       this.setState({StoreID:this.props.route.params.StoreId})
+         this.fetchCats('didupdate');    
+   }else{
+    
+   }
+ }
   cancelPopup() {
     // console.log("dsssssssssssssssssss")
     // this.bs.current.snapTo(1)
