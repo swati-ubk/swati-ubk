@@ -29,6 +29,5 @@ export default class WebService {
       })
       .catch(e => console.log(e));
   }
-static myProductArray;
-
+  static myProductArray;
 }

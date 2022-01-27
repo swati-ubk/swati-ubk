@@ -26,6 +26,12 @@ const PayoutScreen = probs => {
   const [Token, SetToken] = useState('');
   const [data, setData] = useState([]);
   const [UserData, setUserData] = useState(0);
+  const [offset, setoffset] = useState(0);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setonEndReachedCalledDuringMomentum,
+  ] = useState(true);
+  // let onEndReachedCalledDuringMomentum = true;
   useEffect(() => {
     async function fetchMyAPI() {
       try {
@@ -59,11 +65,26 @@ const PayoutScreen = probs => {
       .catch(e => console.log(e));
 
     // console.log('requestOptions..', requestOptions);
-    WebService.PostData('customer/settlement?limit=60&skip=0', requestOptions)
+    WebService.PostData(
+      `customer/settlement?limit=60&skip=${offset}`,
+      requestOptions,
+    )
       .then(res => res.json())
       .then(resJson => {
-        setData(resJson);
-        setLoading(false);
+        if (resJson.length > 0) {
+          // setData(resJson);
+
+          resJson.forEach(element => {
+            console.log('data...', element);
+            data.push(element);
+            //setData(...data, element);
+          });
+          setonEndReachedCalledDuringMomentum(false);
+          setLoading(false);
+          setoffset(offset + 1);
+        } else {
+          setLoading(false);
+        }
       })
       .catch(e => console.log(e));
   };
@@ -168,8 +189,34 @@ const PayoutScreen = probs => {
     />
   );
 
+  const renderFooter = () => {
+    return (
+      <View style={styles.footer}>
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            color={globalcolor.PrimaryColor}
+            style={{margin: 15}}
+          />
+        ) : null}
+      </View>
+    );
+  };
+  // const handleRefresh = () => {
+  //   if (!onEndReachedCalledDuringMomentum) {
+  //     FetachReferalNetwork(Token);
+  //     setonEndReachedCalledDuringMomentum(true);
+  //   }
+  // };
+  const onEndReached = ({distanceFromEnd}) => {
+    if (!onEndReachedCalledDuringMomentum) {
+      FetachReferalNetwork(Token);
+      setonEndReachedCalledDuringMomentum(true);
+    }
+  };
+
   const renderItemComponent = data => {
-    console.log('payout Items..', JSON.stringify(data));
+    //console.log('payout Items..', JSON.stringify(data));
 
     return (
       <TouchableOpacity
@@ -292,14 +339,19 @@ const PayoutScreen = probs => {
         </View> */}
         <FlatList
           data={data}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item =>
+            item.id.toString() + Math.floor(Math.random() * 10000000000000)
+          }
           ItemSeparatorComponent={ItemSeparator}
           renderItem={item => renderItemComponent(item)}
-          // ListFooterComponent={this.renderFooter}
+          ListFooterComponent={renderFooter()}
           refreshing={loading}
-          //   onRefresh={FetachReferalNetwork()}
-          // onEndReached={this.fetchCats('endcall')}
+          // onRefresh={handleRefresh()}
+          onEndReached={onEndReached.bind(this)}
           onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => {
+            setonEndReachedCalledDuringMomentum(false);
+          }}
         />
       </View>
     </SafeAreaView>

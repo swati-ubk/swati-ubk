@@ -44,6 +44,11 @@ const Passbook = ({navigation}) => {
   const [UserData, SetUserData] = useState('');
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [offset, setoffset] = useState(0);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setonEndReachedCalledDuringMomentum,
+  ] = useState(true);
   useEffect(() => {
     // BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
     // return () => {
@@ -82,11 +87,29 @@ const Passbook = ({navigation}) => {
         // body: JSON.stringify({ })
       };
       console.log(requestOptions);
-      fetch(ConfigFile.BaseUrl + 'passbook?limit=20&skip=0', requestOptions)
+      fetch(
+        ConfigFile.BaseUrl + `passbook?limit=40&skip=${offset}`,
+        requestOptions,
+      )
         .then(res => res.json())
         .then(resJson => {
-          setDataSource(resJson);
-          setLoading(false);
+          if (resJson.length > 0) {
+            // setData(resJson);
+
+            resJson.forEach(element => {
+              console.log('data...', element);
+              dataSource.push(element);
+              //setData(...data, element);
+            });
+            setonEndReachedCalledDuringMomentum(false);
+            setLoading(false);
+            setoffset(offset + 1);
+          } else {
+            setLoading(false);
+          }
+
+          // setDataSource(resJson);
+          // setLoading(false);
         })
         .catch(e => console.log(e));
     } catch (e) {
@@ -164,6 +187,15 @@ const Passbook = ({navigation}) => {
     );
   };
 
+  /*===========================Load More Function Start Here ==========================*/
+  const onEndReached = ({distanceFromEnd}) => {
+    if (!onEndReachedCalledDuringMomentum) {
+      PassbookData();
+      setonEndReachedCalledDuringMomentum(true);
+    }
+  };
+  /*===========================Load More Function END  Here ==========================*/
+
   //render() {
   const ItemSeparator = () => (
     <View
@@ -176,6 +208,19 @@ const Passbook = ({navigation}) => {
       }}
     />
   );
+  const renderFooter = () => {
+    return (
+      <View style={styles.footer}>
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            color={globalcolor.PrimaryColor}
+            style={{margin: 15}}
+          />
+        ) : null}
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={globalstyle.container}>
@@ -233,9 +278,14 @@ const Passbook = ({navigation}) => {
             keyExtractor={(item, index) => index.toString()}
             ItemSeparatorComponent={ItemSeparator}
             renderItem={ItemView}
-            //ListFooterComponent={renderFooter}
-            // onEndReached={getData}
+            ListFooterComponent={renderFooter()}
+            refreshing={loading}
+            // onRefresh={handleRefresh()}
+            onEndReached={onEndReached.bind(this)}
             onEndReachedThreshold={0.5}
+            onMomentumScrollBegin={() => {
+              setonEndReachedCalledDuringMomentum(false);
+            }}
           />
         ) : (
           <View style={globalstyle.ActivityContainer}>

@@ -24,11 +24,20 @@ export default function TabViewExample({navigation}) {
   const [MyOrderloading, setMyOrderLoading] = useState(false);
   const [Rewardloading, setRewardLoading] = useState(false);
   const [isListEnd, setIsListEnd] = useState(false);
-  const [offset, setOffset] = useState(0);
+  const [offset1, setoffset1] = useState(0);
+  const [offset2, setoffset2] = useState(0);
   const [index, setIndex] = React.useState(0);
   const [Token, SetToken] = useState('');
   const [dataSource, setDataSource] = useState([]);
   const [dataSourceReward, setDataSourceReward] = useState([]);
+  const [
+    onEndReachedCalledDuringMomentum1,
+    setonEndReachedCalledDuringMomentum1,
+  ] = useState(true);
+  const [
+    onEndReachedCalledDuringMomentum2,
+    setonEndReachedCalledDuringMomentum2,
+  ] = useState(true);
   const [routes] = React.useState([
     {key: 'first', title: 'Bussiness Order'},
     {key: 'second', title: 'Rewards Order'},
@@ -41,28 +50,10 @@ export default function TabViewExample({navigation}) {
         setRewardLoading(true);
 
         let userToken = await AsyncStorage.getItem('userToken');
-        console.log('userToken.....', userToken);
-        const requestOptions = {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + userToken,
-          },
-        };
-        WebService.PostData('my-orders?limit=100&skip=0', requestOptions)
-          .then(res => res.json())
-          .then(resJson => {
-            setDataSource(resJson);
-            setMyOrderLoading(false);
-          })
-          .catch(e => console.log(e));
-        WebService.PostData('store/my-orders?limit=20&skip=0', requestOptions)
-          .then(res => res.json())
-          .then(resJson => {
-            setDataSourceReward(resJson);
-            setRewardLoading(false);
-          })
-          .catch(e => console.log(e));
+        //  console.log('userToken.....', userToken);
+        SetToken(userToken);
+        getOrderData(userToken);
+        getOrderRewards(userToken);
       } catch (e) {
         console.log(e);
       }
@@ -70,6 +61,90 @@ export default function TabViewExample({navigation}) {
 
     fetchMyAPI();
   }, []);
+
+  /*===========================Load More Function Start Here ==========================*/
+  const onEndReached1 = ({distanceFromEnd}) => {
+    if (!onEndReachedCalledDuringMomentum1) {
+      getOrderData(Token);
+      setonEndReachedCalledDuringMomentum1(true);
+    }
+  };
+  const onEndReached2 = ({distanceFromEnd}) => {
+    if (!onEndReachedCalledDuringMomentum2) {
+      getOrderRewards(Token);
+      setonEndReachedCalledDuringMomentum2(true);
+    }
+  };
+  /*===========================Load More Function END  Here ==========================*/
+
+  const getOrderData = Token => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + Token,
+      },
+    };
+    WebService.PostData(`my-orders?limit=100&skip=${offset1}`, requestOptions)
+      .then(res => res.json())
+      .then(resJson => {
+        if (resJson.length > 0) {
+          resJson.forEach(element => {
+            //console.log('data...', element);
+            dataSource.push(element);
+          });
+          setonEndReachedCalledDuringMomentum1(false);
+          setMyOrderLoading(false);
+          setoffset1(offset1 + 1);
+        }
+
+        // setDataSource(resJson);
+        // setMyOrderLoading(false);
+      })
+      .catch(e => console.log(e));
+  };
+  const getOrderRewards = Token => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + Token,
+      },
+    };
+    WebService.PostData(
+      `store/my-orders?limit=20&skip=${offset2}`,
+      requestOptions,
+    )
+      .then(res => res.json())
+      .then(resJson => {
+        if (resJson.length > 0) {
+          resJson.forEach(element => {
+            // console.log('data...', element);
+            dataSourceReward.push(element);
+          });
+          setonEndReachedCalledDuringMomentum2(false);
+          setRewardLoading(false);
+          setoffset2(offset2 + 1);
+        }
+
+        // setDataSourceReward(resJson);
+        // setRewardLoading(false);
+      })
+      .catch(e => console.log(e));
+  };
+  const renderFooter = () => {
+    return (
+      <View style={styles.footer}>
+        {MyOrderloading || Rewardloading ? (
+          <ActivityIndicator
+            size="large"
+            color={globalcolor.PrimaryColor}
+            style={{margin: 15}}
+          />
+        ) : null}
+      </View>
+    );
+  };
 
   const ActivityIndicatorShow = () => {
     return (
@@ -91,12 +166,19 @@ export default function TabViewExample({navigation}) {
       {dataSource.length > 0 ? (
         <FlatList
           data={dataSource}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item, index) =>
+            index.toString() + Math.floor(Math.random() * 10000000000000)
+          }
           ItemSeparatorComponent={ItemSeparatorView}
           renderItem={ItemView}
-          //  ListFooterComponent={renderFooter}
-          //  onEndReached={getData}
-          //  onEndReachedThreshold={0.5}
+          refreshing={MyOrderloading}
+          ListFooterComponent={renderFooter()}
+          // onRefresh={handleRefresh()}
+          onEndReached={onEndReached1.bind(this)}
+          onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => {
+            setonEndReachedCalledDuringMomentum1(false);
+          }}
         />
       ) : (
         <View style={[globalstyle.ActivityContainer, {marginTop: 50}]}>
@@ -119,12 +201,19 @@ export default function TabViewExample({navigation}) {
       {dataSourceReward.length > 0 ? (
         <FlatList
           data={dataSourceReward}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item, index) =>
+            index.toString() + Math.floor(Math.random() * 10000000000000)
+          }
           ItemSeparatorComponent={ItemSeparatorView}
           renderItem={ItemViewRewards}
-          //  ListFooterComponent={renderFooter}
-          //  onEndReached={getData}
-          //  onEndReachedThreshold={0.5}
+          refreshing={Rewardloading}
+          ListFooterComponent={renderFooter()}
+          // onRefresh={handleRefresh()}
+          onEndReached={onEndReached2.bind(this)}
+          onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => {
+            setonEndReachedCalledDuringMomentum2(false);
+          }}
         />
       ) : (
         <View style={[globalstyle.ActivityContainer, {marginTop: 50}]}>
@@ -176,7 +265,7 @@ export default function TabViewExample({navigation}) {
   };
 
   const ItemView = ({item}) => {
-    console.log('Items', item);
+    // console.log('Items', item);
     //console.log(globalcolor.ImageBaseUrl+item.photos[0].path);
     return (
       <TouchableOpacity

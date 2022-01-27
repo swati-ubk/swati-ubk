@@ -25,6 +25,7 @@ import Counter from 'react-native-counters';
 export default class ProductListScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.onEndReachedCalledDuringMomentum = true;
     this.state = {
       data: [],
       refreshing: false,
@@ -68,19 +69,17 @@ export default class ProductListScreen extends React.Component {
     });
   }
   componentDidUpdate(prevProps, prevState) {
-    let a =prevState.StoreID;
-    let b =  this.props.route.params.StoreId;
-   if(a!=b)
-   {
-     console.log("update is calling.....")
-       this.setState({data:[]}); 
-       this.setState({loading:true});
-       this.setState({StoreID:this.props.route.params.StoreId})
-         this.fetchCats('didupdate');    
-   }else{
-    
-   }
- }
+    let a = prevState.StoreID;
+    let b = this.props.route.params.StoreId;
+    if (a != b) {
+      console.log('update is calling.....');
+      this.setState({data: []});
+      this.setState({loading: true});
+      this.setState({StoreID: this.props.route.params.StoreId});
+      this.fetchCats('didupdate');
+    } else {
+    }
+  }
   cancelPopup() {
     // console.log("dsssssssssssssssssss")
     // this.bs.current.snapTo(1)
@@ -511,6 +510,13 @@ export default class ProductListScreen extends React.Component {
     }
   };
 
+  onEndReached = ({distanceFromEnd}) => {
+    if (!this.onEndReachedCalledDuringMomentum) {
+      this.getproductlist(this.state.StoreID, this.state.CatId);
+      this.onEndReachedCalledDuringMomentum = true;
+    }
+  };
+
   fetchCats = callType => {
     // this.importData();
     // if ((!this.state.nodata) && (!this.state.refreshing)) {
@@ -542,16 +548,26 @@ export default class ProductListScreen extends React.Component {
     this.setState({refreshing: true});
     this.setState({CatId: CatId});
     WebService.GetData(
-      `business-details/${StoreID}/categories/${CatId}?listProducts=true`,
+      `business-details/${StoreID}/categories/${CatId}?listProducts=true&skip=${this.state.offset}`,
     )
       .then(res => res.json())
       .then(resJson => {
         if (resJson.length > 0) {
-          console.log('Numbeproduct.... ', resJson[0].products.length);
+          // console.log('product data.... ', resJson[0].products);
+          resJson[0].products.forEach(element => {
+            this.setState({data: [...this.state.data, element]});
+          });
 
-          this.setState({data: resJson[0].products});
+          // this.setState({
+          //   data: resJson[0].products,
+          //   offset: this.state.offset + 1,
+          // });
 
-          this.setState({refreshing: false, nodata: true});
+          this.setState({
+            refreshing: false,
+            nodata: true,
+            offset: this.state.offset + 1,
+          });
         } else {
           this.setState({loadmore: false, refreshing: false});
         }
@@ -890,6 +906,19 @@ export default class ProductListScreen extends React.Component {
     }
   };
 
+  renderFooter = () => {
+    return (
+      <View style={styles.footer}>
+        {this.state.loading ? (
+          <ActivityIndicator
+            size="large"
+            color={globalcolor.PrimaryColor}
+            style={{margin: 15}}
+          />
+        ) : null}
+      </View>
+    );
+  };
   checkCartPopup = (data, product) => {
     try {
       // console.log("kkkkkkkkkkkkkkkkkk")
@@ -1228,8 +1257,8 @@ export default class ProductListScreen extends React.Component {
     //this.bs = React.createRef();
     // this.fall = new Animated.Value(1);
 
-    console.log('aaaaaaaaaaaaaaaaa', this.state.count);
-    console.log('aaaaaaaaaaaaaaaaa', this.state.totalPrice);
+    // console.log('aaaaaaaaaaaaaaaaa', this.state.count);
+    //  console.log('aaaaaaaaaaaaaaaaa', this.state.totalPrice);
     // let Localdata = JSON.parse(this.state.localcart);
     // console.log("aaaaaaaaaaaaaaaaa",this.state.localcart)
     // console.log("length==="+this.state.cartegorydata);
@@ -1302,18 +1331,19 @@ export default class ProductListScreen extends React.Component {
 
           <FlatList
             data={this.state.data}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item =>
+              item.id.toString() + Math.floor(Math.random() * 10000000000000)
+            }
             ItemSeparatorComponent={this.ItemSeparator}
             renderItem={item => this.renderItemComponent(item)}
             ListFooterComponent={this.renderFooter}
             refreshing={this.state.refreshing}
             onRefresh={this.handleRefresh}
-            //  onEndReached={this.fetchCats('endcall')}
+            onEndReached={this.onEndReached.bind(this)}
             onEndReachedThreshold={0.5}
-            style={[
-              styles.FlatListStyle,
-              this.state.count > 0 ? {marginBottom: 60} : {marginBottom: 0},
-            ]}
+            onMomentumScrollBegin={() => {
+              this.onEndReachedCalledDuringMomentum = false;
+            }}
           />
           {this.footerViewCart()}
 
