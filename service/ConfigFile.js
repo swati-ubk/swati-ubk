@@ -1,4 +1,4 @@
 export const ConfigFile = {
-    ImageBaseUrl:'https://assets-beta.diskounto.com/',
-    BaseUrl:'http://api.beta.diskounto.com/',
+    ImageBaseUrl:'https://assets.diskounto.com/',
+    BaseUrl:'http://api.diskounto.com/',
 }
