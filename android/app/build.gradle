@@ -141,10 +141,10 @@ android {
     {
         release
         {
-            storePassword '123456'
+            storePassword '7887707719'
             storeFile file(MYAPP_RELEASE_STORE_FILE)
-            keyPassword '123456'
-            keyAlias 'my-key-alias'
+            keyPassword '7887707719'
+            keyAlias 'qoptervzn'
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE'))
             {
                 storeFile file(MYAPP_RELEASE_STORE_FILE)
@@ -164,10 +164,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('my-upload-key.keystore')
-            storePassword '123456'
-            keyAlias 'my-key-alias'
-            keyPassword '123456'
+            storeFile file('keystore.jks')
+            storePassword '7887707719'
+            keyAlias 'qoptervzn'
+            keyPassword '7887707719'
         }
     }
     buildTypes {
