@@ -78,6 +78,11 @@ export default class CheckOutAdderss extends Component {
     // console.log( this.state.userToken,"1111111111111111111")
     // this.fetchData();
     this.importData();
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.fetchData(this.state.userToken);
+
+      //Put your Data loading function here instead of my this.loadData()
+    });
   }
 
   importData = async () => {
@@ -96,6 +101,7 @@ export default class CheckOutAdderss extends Component {
   };
 
   fetchData = async token => {
+    this.state.address=[];
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -108,14 +114,12 @@ export default class CheckOutAdderss extends Component {
     WebService.PostData('me', requestOptions)
       .then(response => response.json())
       .then(response => {
-        console.log('usersdata', response);
+        console.log('usersdata', response.user.address.length);
 
         //const json = await response.json();
-        console.log(
-          '=================amount===============',
-          response.user.firstName,
-        );
-
+        
+if(response.user.address.length>0)
+{
         this.setState({userAddress: response.user.address});
         this.setState({data: response});
         this.setState({addressType: response.user.address[0].id});
@@ -150,6 +154,7 @@ export default class CheckOutAdderss extends Component {
             }),
           );
         }
+      }
 
         this.DeliveryCheck(this.state.userAddress[0]);
       })

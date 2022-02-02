@@ -94,13 +94,9 @@ const Passbook = ({navigation}) => {
         .then(res => res.json())
         .then(resJson => {
           if (resJson.length > 0) {
-            // setData(resJson);
-
-            resJson.forEach(element => {
-              console.log('data...', element);
-              dataSource.push(element);
-              //setData(...data, element);
-            });
+           // setDataSource(resJson);
+         //  setDataSource([...dataSource, ...resJson]);
+          setDataSource([...dataSource,...resJson ]);
             setonEndReachedCalledDuringMomentum(false);
             setLoading(false);
             setoffset(offset + 1);

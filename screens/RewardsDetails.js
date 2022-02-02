@@ -397,7 +397,7 @@ export default class RewardsDetails extends React.Component {
                         width: this.state.WindowWIDTH,
                         height: this.state.WindowHeight * 0.4,
                       }}
-                      source={{uri: globalcolor.ImageBaseUrl + value.path}}
+                      source={{uri: ConfigFile.ImageBaseUrl + value.path}}
                     />
                   </View>
                 ))}

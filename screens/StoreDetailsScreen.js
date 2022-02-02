@@ -221,7 +221,7 @@ export default class StoreDetailsScreen extends React.Component {
 
                       resizeMode='stretch'
                       style={{ width: this.state.WindowWIDTH, height: this.state.WindowHeight * 0.25 }}
-                      source={{ uri: globalcolor.ImageBaseUrl + value.path }}
+                      source={{ uri: ConfigFile.ImageBaseUrl + value.path }}
 
                     />
                   </View>

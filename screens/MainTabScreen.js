@@ -7,7 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {StyleSheet} from 'react-native';
 import HomeScreen from './HomeScreen';
 import DetailsScreen from './DetailsScreen';
-import ExploreScreen from './ExploreScreen';
+//import ExploreScreen from './ExploreScreen';
 import SettingsScreen from './SettingsScreen';
 import CartScreen from './CartScreen';
 import ProfileScreen from './ProfileScreen';

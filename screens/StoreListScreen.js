@@ -154,7 +154,7 @@ const StoreListScreen = props => {
   }
 
   const ItemView = ({item}) => {
-    console.log("================"+globalcolor.ImageBaseUrl+item.photos[0].path);
+    //console.log("================"+ConfigFile.ImageBaseUrl+item.photos[0].path);
     console.log("sdsadasdasd=1===========",""+item.isBoomPartner)
     console.log("sdsadasdasd=2===========",""+item.id)
     console.log("sdsadasdasd=3===========",""+item.acceptsCOD)

@@ -72,13 +72,7 @@ const PayoutScreen = probs => {
       .then(res => res.json())
       .then(resJson => {
         if (resJson.length > 0) {
-          // setData(resJson);
-
-          resJson.forEach(element => {
-            console.log('data...', element);
-            data.push(element);
-            //setData(...data, element);
-          });
+          setData([...data,...resJson ]);    
           setonEndReachedCalledDuringMomentum(false);
           setLoading(false);
           setoffset(offset + 1);

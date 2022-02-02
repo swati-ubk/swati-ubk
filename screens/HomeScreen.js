@@ -24,7 +24,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import StarRating from '../components/StarRating';
 import {globalcolor} from '../style/globalcolor';
-import StoreListScreen from './StoreListScreen_NEW';
+//import StoreListScreen from './StoreListScreen_NEW';
 import WebService from '../service/WebService';
 import Categories from './components/Categories';
 import Geolocation, {

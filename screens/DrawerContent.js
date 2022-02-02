@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {globalcolor} from '../style/globalcolor';
+import { ConfigFile } from '../service/ConfigFile';
 import {
   useTheme,
   Avatar,
@@ -88,7 +89,7 @@ export function DrawerContent(props) {
               <Avatar.Image
                 source={{
                   uri:
-                    globalcolor.ImageBaseUrl + props.userData.profilePic.path,
+                  ConfigFile.ImageBaseUrl + props.userData.profilePic.path,
                 }}
                 size={70}
               />

@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {globalstyle} from '../style/globals.js';
+import { ConfigFile } from '../service/ConfigFile';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {globalcolor} from '../style/globalcolor';
 import {Badge} from 'react-native-paper';
@@ -218,7 +219,7 @@ const RewardCategory = ({navigation}) => {
                 <View style={globalstyle.ListFirstCategoryIcon}>
                   <Image
                     source={{
-                      uri: globalcolor.ImageBaseUrl + value.photos[0].path,
+                      uri: ConfigFile.ImageBaseUrl + value.photos[0].path,
                     }} //Change your icon image here
                     style={[globalstyle.ListImage]}
                   />
@@ -231,7 +232,7 @@ const RewardCategory = ({navigation}) => {
                 <View style={globalstyle.ListSecondIcon}>
                   <FontAwesome
                     name="chevron-right"
-                    color={globalcolor.SeconderFontColor}
+                    color={ConfigFile.SeconderFontColor}
                     size={20}
                   />
                 </View>
