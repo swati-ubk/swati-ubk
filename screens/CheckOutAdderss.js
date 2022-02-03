@@ -114,7 +114,7 @@ export default class CheckOutAdderss extends Component {
     WebService.PostData('me', requestOptions)
       .then(response => response.json())
       .then(response => {
-        console.log('usersdata', response.user.address.length);
+        //console.log('usersdata', response.user.address.length);
 
         //const json = await response.json();
         

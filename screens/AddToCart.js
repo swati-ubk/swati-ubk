@@ -107,7 +107,7 @@ export default class AddToCart extends Component {
       CartData: [],
     });
     try {
-      console.log('sdadasdasdsad---------------------');
+      //console.log('sdadasdasdsad---------------------');
       this.state.localcart = [];
       const keys = await AsyncStorage.getAllKeys();
 
@@ -153,11 +153,11 @@ export default class AddToCart extends Component {
                 (object['variantId'] = jsondata.variants),
                 (object['quantity'] = jsondata.count);
 
-              console.log('asasasas----', object);
-              console.log(
-                'aaaaaa---2----',
-                this.state.localcart.hasOwnProperty(object),
-              );
+              // console.log('asasasas----', object);
+              // console.log(
+              //   'aaaaaa---2----',
+              //   this.state.localcart.hasOwnProperty(object),
+              // );
               this.setState({localcart: [...this.state.localcart, object]});
             } else {
               // console.log("========11111==========")
@@ -196,7 +196,7 @@ export default class AddToCart extends Component {
       WebService.GetData('business-details/' + SelectedStoreID)
         .then(response => response.json())
         .then(responseJson => {
-          console.log('sdcdcc------', responseJson);
+         // console.log('sdcdcc------', responseJson);
           if (responseJson.length > 0) {
             this.setState({
               acceptsCOD: responseJson[0].acceptsCOD,
@@ -238,7 +238,7 @@ export default class AddToCart extends Component {
           requestOptions,
         );
         const json = await response.json();
-        console.log('---------33333----', json);
+       // console.log('---------33333----', json);
         if (json.items.length > 0) {
           this.setState({
             data: json,
@@ -365,7 +365,7 @@ export default class AddToCart extends Component {
       var count = Object.keys(userData.variants).length;
 
       ///  await AsyncStorage.setItem(productId, JSON.stringify(data_obj));
-      console.log(userData.variants, count);
+     // console.log(userData.variants, count);
       if (count == '0') {
         //console.log('1ok');
 
