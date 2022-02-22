@@ -4,6 +4,8 @@ import {globalstyle} from '../style/globals.js';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useTheme} from '@react-navigation/native';
 import {globalcolor} from '../style/globalcolor';
+
+
 const CartScreen = () => {
   const theme = useTheme();
     return (
@@ -12,8 +14,6 @@ const CartScreen = () => {
         <View style={styles.profile}>
           
                 <Text>Hello  cart page</Text>
-           
-            
 
       </View>
       

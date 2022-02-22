@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Image,
   TextInput,
+  Alert,
   ScrollView,
 } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
@@ -341,17 +342,50 @@ const paymentDatails = async data => {
   WebService.PostData('store/order', requestOptions)
     .then(response => response.json())
     .then(response => {
-      //   console.log("address",response)
+         console.log("address--------",response)
 
       //const json = await response.json();
-      console.log('RewardsOrder....', JSON.stringify(response));
-      if (response.orders[0].orderState == 'CREATED') {
-        data.data.props.navigation.navigate('RewardsSuccessScreen', {
-          OrderData: response,
-          OrderID: response.orders[0].orderId,
-        });
-      } else {
-      }
+     // console.log('RewardsOrder....', JSON.stringify(response));
+      //console.log('RewardsOrder....', response.hasOwnProperty);
+     // const resJson = JSON.stringify(response);
+     // console.log("resJson",resJson);
+      if (response.hasOwnProperty('errors')) 
+        {
+          console.log("address",111111)
+          if (response.hasOwnProperty('errors')) {
+            if (response.errors[0].type == 'REJECTED') {
+            ///  setMsg(response.errors[0].userMessage);
+
+
+            Alert.alert(  
+              '!'+response.errors[0].type+' Alert ',  
+              response.errors[0].userMessage,  
+              [  
+                  {  
+                      text: 'Cancel',  
+                      onPress: () => console.log('Cancel Pressed'),  
+                      style: 'cancel',  
+                  },  
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},  
+              ]  
+          ); 
+
+            }
+          }
+
+        }
+        else{
+          console.log("address",222222)
+          if (response.orders[0].orderState == 'CREATED') {
+            data.data.props.navigation.navigate('RewardsSuccessScreen', {
+              OrderData: response,
+              OrderID: response.orders[0].orderId,
+            });
+          } else {
+          }
+
+        }
+     
 
       // this.DeliveryCheck(this.state.userAddress[0]);
     })

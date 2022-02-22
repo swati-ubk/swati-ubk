@@ -7,7 +7,7 @@ import { globalcolor } from '../style/globalcolor';
 import { Avatar } from 'react-native-paper';
 import WebService from '../service/WebService';
 const AllCategories = (probs) => {
-  //console.log("==========All category==========");
+console.log("==========All_category==========",probs.route.params.location);
   // console.log(probs.navigation.navigate);
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([]);
@@ -55,7 +55,7 @@ const AllCategories = (probs) => {
           {data.map((value, index) => (
             <TouchableOpacity key={index}
 
-              onPress={() => { probs.navigation.navigate('StoreListScreen', { Catvalue: value.value, catNamee: value.name}) }}
+              onPress={() => { probs.navigation.navigate('StoreListScreen', { Catvalue: value.value, catNamee: value.name, location:probs.route.params.location}) }}
             >
               <View style={globalstyle.ListCategoryrow}
 

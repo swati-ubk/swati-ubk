@@ -63,6 +63,27 @@ import TabaddToCart from './screens/TabaddToCart';
 import AddressListScreen from './screens/AddressListScreen';
 import UpdateaddressScreen from './screens/UpdateaddressScreen';
 import PayoutDetailsScreen from './screens/PayoutDetailsScreen';
+import BusinessHome from './screens/Business/BusinessHome';
+import VendorHome from './screens/Business/VendorHome';
+import OrderList from './screens/Business/OrderList';
+import Transaction from './screens/Business/Transaction';
+import Balance from './screens/Business/Balance';
+import settlement from './screens/Business/Settlement';
+import Itemlist from './screens/Business/ItemList';
+import TaxInvoice from './screens/Business/TaxInvoice';
+import BusinessPage from './screens/Business/BusinessPage';
+import ItemDetails from './screens/Business/ItemDetails';
+import AddBusiness from './screens/Business/AddBusiness';
+import AddBusinessPhoto from './screens/Business/AddBusinessPhoto';
+import AddBusinessLocation from './screens/Business/AddBusinessLocation';
+import AddBusinessDetails from './screens/Business/AddBusinessDetails';
+import Succesfulmsg from './screens/Business/Successfulmsg';
+import PickeyHome from './screens/Pickey/PickeyHome';
+import BookingPage from './screens/Pickey/BookingPage';
+import CheckoutInvoice from './screens/Pickey/CheckoutInvoice';
+import VerifyPage from './screens/Pickey/VerifyPage';
+import PreBooking from './screens/Pickey/PreBooking';
+
 const Drawer = createDrawerNavigator();
 
 let name = null;
@@ -250,9 +271,25 @@ const YourApp = () => {
                 <DrawerContent {...props} {...passProps} />
               )}>
               <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
+              <Drawer.Screen name="BusinessHome" component={BusinessHome} />
               <Drawer.Screen name="SupportScreen" component={SupportScreen} />
               <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
               <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
+              <Drawer.Screen name="OrderList" component={OrderList} />
+              <Drawer.Screen name="Transaction" component={Transaction} />
+              <Drawer.Screen name="Balance" component={Balance} />
+              <Drawer.Screen name="settlement" component={settlement} />
+              <Drawer.Screen name="ItemList" component={Itemlist} />
+              <Drawer.Screen name="TaxInvoice" component={TaxInvoice} />
+              <Drawer.Screen name="ItemDetails" component={ItemDetails} />
+              <Drawer.Screen name="AddBusiness" component={AddBusiness} />
+              <Drawer.Screen name="AddBusinessPhoto" component={AddBusinessPhoto} />
+              <Drawer.Screen name="AddBusinessLocation" component={AddBusinessLocation} />
+              <Drawer.Screen name="AddBusinessDetails" component={AddBusinessDetails} />
+              <Drawer.Screen name="PickeyHome" component={PickeyHome} />
+              <Drawer.Screen name="BookingPage" component={BookingPage} />
+              <Drawer.Screen name="CheckoutInvoice" component={CheckoutInvoice} />
+              <Drawer.Screen name="VerifyPage" component={VerifyPage} />
               <Drawer.Screen
                 name="StoreListScreen"
                 component={StoreListScreen}
@@ -309,7 +346,10 @@ const YourApp = () => {
               <Drawer.Screen name="PayoutScreen" component={PayoutScreen} />
               <Drawer.Screen name="SearchScreen" component={SearchScreen} />
               <Drawer.Screen name="RequestPayout" component={RequestPayout} />
-
+              <Drawer.Screen name="VendorHome" component={VendorHome} />
+              <Drawer.Screen name="BusinessPage" component={BusinessPage} />
+              <Drawer.Screen name="Succesfulmsg" component={Succesfulmsg} />
+              <Drawer.Screen name="PreBooking" component={PreBooking} />
               <Drawer.Screen
                 name="AddressListScreen"
                 component={AddressListScreen}

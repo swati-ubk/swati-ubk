@@ -183,7 +183,7 @@ export default class ProductListScreen extends React.Component {
               console.log('=========102.1======');
 
               await AsyncStorage.removeItem(product.id);
-              //  this.importData()
+                this.importData()
 
               this.setState({
                 totalPrice: 0,
@@ -207,7 +207,7 @@ export default class ProductListScreen extends React.Component {
               };
 
               await AsyncStorage.setItem(product.id, JSON.stringify(data_obj));
-              // this.importData()
+               this.importData()
             }
           } else {
             var sellingPrice = parseInt(product.variants[0].sellingPrice);
@@ -221,7 +221,7 @@ export default class ProductListScreen extends React.Component {
             };
 
             await AsyncStorage.setItem(product.id, JSON.stringify(data_obj));
-            // this.importData()
+             this.importData()
           }
         }
         if (this.importData()) {
@@ -444,8 +444,7 @@ export default class ProductListScreen extends React.Component {
                   priduce_v: arrr,
                 };
 
-                // console.log("====823199===",""+JSON.stringify(userData))
-                // console.log("====8231===",""+JSON.stringify(data_obj))
+            
                 await AsyncStorage.setItem(data.id, JSON.stringify(data_obj));
               }
             } else {
@@ -510,6 +509,8 @@ export default class ProductListScreen extends React.Component {
   };
 
   onEndReached = ({distanceFromEnd}) => {
+    console.log("sasssss--------------",this.state.offset)
+    console.log("sasssss--------------",this.onEndReachedCalledDuringMomentum)
     if (!this.onEndReachedCalledDuringMomentum) {
       this.getproductlist(this.state.StoreID, this.state.CatId);
       this.onEndReachedCalledDuringMomentum = true;
@@ -552,17 +553,20 @@ export default class ProductListScreen extends React.Component {
             offsetValue=0;
             this.setState({offset:0});
           }
+          // `business-details/${StoreID}/categories/${CatId}?listProducts=true&skip=${offsetValue}&limit=2`,
     WebService.GetData(
-      `business-details/${StoreID}/categories/${CatId}?listProducts=true&skip=${offsetValue}`,
+      `business-details/${StoreID}/products?categoryId=${CatId}&skip=${offsetValue}&limit=7`,
     )
       .then(res => res.json())
       .then(resJson => {
+        console.log("resJson------------------",resJson);
         if (resJson.length > 0) {
           if(this.state.CatId==CatId)
           {
-            this.setState({data: [...this.state.data, ...resJson[0].products]});
+            this.onEndReachedCalledDuringMomentum = false;
+            this.setState({data: [...this.state.data, ...resJson]});
           }else{
-            this.setState({data:resJson[0].products,offset:0});
+            this.setState({data:resJson,offset:0});
           }
           
          
@@ -749,7 +753,7 @@ export default class ProductListScreen extends React.Component {
     try {
       let pid = data.id;
 
-      //console.log("aaaaaaaaaaaaaaaaa",data)
+      console.log("aaaaaaaaaaaaaaaaa",data)
 
       if (this.state.localcart[0].hasOwnProperty(pid)) {
         const userData = JSON.parse(this.state.localcart[0][pid]);
@@ -1074,10 +1078,7 @@ export default class ProductListScreen extends React.Component {
   };
 
   renderItemComponent = data => {
-    // console.log("===========================")
-    // console.log(this.state.cartData)
-    // console.log( this.state.cartData.length)
-    //if(data.item.length>0){
+
     let imageUrl = '';
     if (data.item.photos.length > 0) {
       imageUrl = ConfigFile.ImageBaseUrl + data.item.photos[0].path;
@@ -1268,20 +1269,6 @@ export default class ProductListScreen extends React.Component {
   }
 
   render() {
-    //this.bs = React.createRef();
-    // this.fall = new Animated.Value(1);
-
-    // console.log('aaaaaaaaaaaaaaaaa', this.state.count);
-    //  console.log('aaaaaaaaaaaaaaaaa', this.state.totalPrice);
-    // let Localdata = JSON.parse(this.state.localcart);
-    // console.log("aaaaaaaaaaaaaaaaa",this.state.localcart)
-    // console.log("length==="+this.state.cartegorydata);
-
-    // if (Localdata.hasOwnProperty('count')) {
-    //   console.log('Count==', this.state.count);
-    // } else {
-    //   console.log('Count==', '0');
-    // }
 
     if (this.state.cartegorydata.length > 1) {
       return (
@@ -1506,7 +1493,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '35%',
     height: 30,
-    marginLeft: 7,
+    marginLeft: 5,
     marginRight: 7,
   },
 

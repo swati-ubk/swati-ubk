@@ -122,6 +122,8 @@ class HomeScreen extends Component {
           lng: FinalCoordinate.longitude,
         });
       } else {
+        
+       // this.getChangeAddress();
         //   console.log("=================2========================", value)
       }
       this.GetPopularStores();

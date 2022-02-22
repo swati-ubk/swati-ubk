@@ -5,7 +5,7 @@ import {globalcolor} from '../../style/globalcolor';
 import WebService from '../../service/WebService';
 import {useTheme} from '@react-navigation/native';
 export default Categories = data => {
-  //  console.log('Category Components..', data);
+    console.log('Category Components..', data);
   const [loading, setLoading] = useState(false);
   const [dataSource1, setDataSource1] = useState([]);
   const [dataSource2, setDataSource2] = useState([]);
@@ -67,6 +67,8 @@ export default Categories = data => {
       });
   };
 
+
+  console.log("==================33================", data.data.location);
   return (
     <View>
       <View style={styles.categoryContainer}>
@@ -102,7 +104,10 @@ export default Categories = data => {
               key={index}
               style={styles.categoryBtn}
               onPress={() => {
-                data.data.props.navigation.navigate('AllCategories');
+                data.data.props.navigation.navigate('AllCategories',
+                {
+                  location: data.data.location,
+                });
               }}>
               <View style={styles.categoryIcon}>
                 <Image

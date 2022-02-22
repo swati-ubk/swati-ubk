@@ -140,6 +140,17 @@ export const globalstyle = StyleSheet.create({
     color: globalcolor.PrimaryColor,
     fontSize: 20,
   },
+  PrimaryText: {
+    fontFamily: globalcolor.Font,
+    color: globalcolor.Textcolor,
+    fontSize: 15,
+  },
+  PriceText: {
+    fontFamily: globalcolor.Font,
+    color: globalcolor.Textcolor,
+    fontSize: 18,
+    marginTop:6,
+  },
   ProductText: {
     fontFamily: globalcolor.Font,
     color: globalcolor.FontBlack,

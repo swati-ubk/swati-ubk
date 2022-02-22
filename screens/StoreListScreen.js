@@ -6,6 +6,7 @@ import {ConfigFile} from '../service/ConfigFile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {WebService} from '../service/WebService.js';
 import WebService from '../service/WebService';
+//import HomeScreen from '../screens/HomeScreen';
 import {
   SafeAreaView,
   View,
@@ -22,11 +23,14 @@ import {Item} from 'react-native-paper/lib/typescript/components/List/List';
 import { log } from 'react-native-reanimated';
 
 const StoreListScreen = props => {
-  //console.log(props.route.params.Catvalue);
+  console.log("=========555======",props.route.params.location);
+
+  
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState([]);
   const [isListEnd, setIsListEnd] = useState(false);
 
+  //let location=props.route.params.address;
   useEffect(() => {
     console.log('props...', JSON.stringify(props));
     console.log('props.22..', props.route.params.Catvalue);

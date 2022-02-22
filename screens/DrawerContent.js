@@ -244,7 +244,7 @@ export function DrawerContent(props) {
                 props.navigation.navigate('OrderPage');
               }}
             />
-            {/* <DrawerItem 
+            <DrawerItem 
                         
                             icon={({color, size}) => (
                                 <FontAwesome 
@@ -253,10 +253,23 @@ export function DrawerContent(props) {
                                 size={size}
                                 />
                             )}
-                            label="My Business"
+                            label="Business"
                             
-                            onPress={() => {props.navigation.navigate('BookmarkScreen')}}
-                        /> */}
+                            onPress={() => {props.navigation.navigate('BusinessHome')}}
+              />
+              <DrawerItem 
+                        
+                        icon={({color, size}) => (
+                            <FontAwesome 
+                            name="briefcase"
+                            color={globalcolor.PrimaryColor}
+                            size={size}
+                            />
+                        )}
+                        label="Pickey_aap"
+                        
+                        onPress={() => {props.navigation.navigate('PickeyHome')}}
+          />
             <DrawerItem
               icon={({color, size}) => (
                 <FontAwesome

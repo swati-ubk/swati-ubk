@@ -119,20 +119,28 @@ export default class StoreDetailsScreen extends React.Component {
     this.props.navigation.navigate('ProductListScreen', { StoreId: this.props.route.params.StoreId, acceptsCOD: acceptsCOD, requireSlot: requireSlot })
   }
 
-  shopNow(status, acceptsCOD, requireSlot) {
+  shopNow(status, acceptsCOD, requireSlot,isOpen) {
 
 
-
+console.log("g----------",isOpen);
 
     return (
+      
       status == true ?
+       isOpen? 
         <TouchableOpacity
           onPress={() => { this.productListPage(acceptsCOD, requireSlot) }}
         >
           <View style={globalstyle.FooterTabButton}>
-            <Text style={globalstyle.FooterTabText}> Shop now</Text>
+         
+            <Text style={globalstyle.FooterTabText}> Shop now </Text>
+             
           </View>
         </TouchableOpacity>
+        : 
+        <View style={globalstyle.FooterTabButton}>
+        <Text style={globalstyle.FooterTabText}> Shop Close </Text>
+        </View>
         : null
     )
   }
@@ -287,7 +295,7 @@ export default class StoreDetailsScreen extends React.Component {
 
           </ScrollView>
 
-          {this.shopNow(this.state.data[0].isBoomPartner, this.state.data[0].acceptsCOD, this.state.data[0].requireSlot)}
+          {this.shopNow(this.state.data[0].isBoomPartner, this.state.data[0].acceptsCOD, this.state.data[0].requireSlot,this.state.data[0].isOpen)}
 
 
         </SafeAreaView>

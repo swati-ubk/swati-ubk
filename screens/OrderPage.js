@@ -397,6 +397,7 @@ export default function TabViewExample({navigation}) {
         initialLayout={{width: layout.width}}
         renderTabBar={renderTabBar}
       />
+      
     </View>
   );
 }
@@ -420,4 +421,62 @@ const styles = StyleSheet.create({
   OrderText: {
     fontFamily: globalcolor.Font,
   },
+  search_text:{
+
+    marginTop:10,
+    marginHorizontal:15,
+    fontSize:16,
+    color:'#646469'
+  },
+  order_text:{
+
+    marginTop:10,
+    marginHorizontal:10,
+    fontSize:14,
+    color:'#646469'
+  },
+  search_bar:{
+    width:'100%',
+    height:'10%',
+    flexDirection:'row'
+
+  },
+  search_box:{
+    width:'80%',
+    height:'60%',
+    elevation:2,
+    borderRadius:10,
+    marginLeft:10,
+    marginVertical:10, 
+  },
+  round_shape:{
+    width:50,
+    height:50,
+    backgroundColor:'#F0F0F0',
+    borderRadius:100,
+    marginLeft:5,
+    justifyContent:'center'
+  },
+  order_list:{
+    flex:0.8,
+    height:'60%',
+    marginHorizontal:15,
+    elevation:2,
+    borderRadius:10,
+    position:'relative'
+  },
+  order_cart:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    paddingHorizontal:15,
+    width:'100%',
+    height:'10%',
+    fontSize:10,
+    borderBottomColor:'#C4C4C4',
+    borderBottomWidth:1,
+    marginTop:15,
+    borderRadius:10,
+    
+  }
+
 });
