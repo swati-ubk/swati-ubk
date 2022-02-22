@@ -2,6 +2,7 @@
 #
 .DS_Store
 android/java_pid5416.hprof
+package-lock.json
 # Xcode
 #
 build/
@@ -31,6 +32,12 @@ local.properties
 
 # node.js
 #
+
+android/java_pid2526.hprof
+android/java_pid9867.hprof
+android/app/build.gradle
+android/app/release/app-release.apk
+modified:   screens/AllCategories.js
 node_modules/
 npm-debug.log
 yarn-error.log

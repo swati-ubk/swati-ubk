@@ -18,6 +18,7 @@ import { Button } from "react-native-paper";
 
  const PreBooking=()=>{
 
+    
     return(
         <SafeAreaView style={styles.container}>
             <View>
@@ -76,9 +77,17 @@ import { Button } from "react-native-paper";
                 </View>
 
                 {/* Trip summery */}
+                <View>
+                    <View style={styles.trip_summery}>
+                        <Text style={styles.font}>Trip summery</Text>
+                    </View>
+                    <View>
+                        <View style={{flexDirection:'row'}}>
+                            <View style>
 
-                <View style={styles.trip_summery}>
-                    <Text style={styles.font}>Trip summery</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
                 </ScrollView>
             </View>
