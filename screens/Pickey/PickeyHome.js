@@ -90,6 +90,52 @@ import {
                             </View>
                           </View>
                         </TouchableOpacity>
+
+                        <TouchableOpacity
+                          onPress={() => probs.navigation.navigate('Recommendation')}>
+                          <View style={styles.ListCategoryrow}>
+                            <View style={styles.ListFirstCategoryIcon}>
+                              <FontAwesome
+                                name="car-alt" 
+                                
+                                size={25}
+                              />
+                            </View>
+                            <View style={styles.ListBody}>
+                              <Text style={styles.ListText}>On Recommendation</Text>
+                            </View>
+                            <View style={styles.ListSecondIcon}>
+                              <FontAwesome
+                                name="chevron-right"
+                                
+                                size={18}
+                              />
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          onPress={() => probs.navigation.navigate('PopUp')}>
+                          <View style={styles.ListCategoryrow}>
+                            <View style={styles.ListFirstCategoryIcon}>
+                              <FontAwesome
+                                name="car-alt" 
+                                
+                                size={25}
+                              />
+                            </View>
+                            <View style={styles.ListBody}>
+                              <Text style={styles.ListText}>Pop Up</Text>
+                            </View>
+                            <View style={styles.ListSecondIcon}>
+                              <FontAwesome
+                                name="chevron-right"
+                                
+                                size={18}
+                              />
+                            </View>
+                          </View>
+                        </TouchableOpacity>
                      </View>
                
             </SafeAreaView>

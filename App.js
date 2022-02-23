@@ -83,7 +83,8 @@ import BookingPage from './screens/Pickey/BookingPage';
 import CheckoutInvoice from './screens/Pickey/CheckoutInvoice';
 import VerifyPage from './screens/Pickey/VerifyPage';
 import PreBooking from './screens/Pickey/PreBooking';
-
+import Recommendation from './screens/Pickey/Recommendation';
+import PopUp from './screens/Pickey/PopUp';
 const Drawer = createDrawerNavigator();
 
 let name = null;
@@ -350,6 +351,8 @@ const YourApp = () => {
               <Drawer.Screen name="BusinessPage" component={BusinessPage} />
               <Drawer.Screen name="Succesfulmsg" component={Succesfulmsg} />
               <Drawer.Screen name="PreBooking" component={PreBooking} />
+              <Drawer.Screen name="Recommendation" component={Recommendation} />
+              <Drawer.Screen name="PopUp" component={PopUp} />
               <Drawer.Screen
                 name="AddressListScreen"
                 component={AddressListScreen}
